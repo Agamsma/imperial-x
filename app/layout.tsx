@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import { SITE_URL } from "@/lib/site";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -18,10 +19,21 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const DESCRIPTION =
+  "VajraNow is a web dashboard that tells officials which storm hazard is coming, exactly where, how sure we are, and how many minutes they have. SIH 2026 idea by Team OmniSense.";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "VajraNow | Storm nowcasting for India",
-  description:
-    "VajraNow is a web dashboard that tells officials which storm hazard is coming, exactly where, how sure we are, and how many minutes they have. SIH 2026 idea by Team OmniSense.",
+  description: DESCRIPTION,
+  openGraph: {
+    title: "VajraNow | Storm nowcasting for India",
+    description: DESCRIPTION,
+    siteName: "VajraNow",
+    type: "website",
+    locale: "en_IN",
+  },
+  twitter: { card: "summary_large_image", title: "VajraNow | Storm nowcasting for India", description: DESCRIPTION },
 };
 
 export const viewport: Viewport = {
