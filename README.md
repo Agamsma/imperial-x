@@ -127,12 +127,12 @@ Open http://localhost:3000. The demo is at http://localhost:3000/demo.
 
 | Name | Role |
 | --- | --- |
-| Team Leader Name | Team leader |
-| Member 2 Name | Member |
-| Member 3 Name | Member |
-| Member 4 Name | Member |
-| Member 5 Name | Member |
-| Member 6 Name | Member |
+| Agam Sharma | Team leader |
+| Abdeali Jhabuawala | Member |
+| Samar Kuril | Member |
+| Krish Patel | Member |
+| Vipul Singh Adhikari | Member |
+| Pritika Pangotra | Member |
 
 ## Links
 
