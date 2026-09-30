@@ -81,7 +81,7 @@ How to get each one: [docs/data-sources.md](docs/data-sources.md).
 | --- | --- |
 | Data and models | Python, PyTorch, pysteps, LightGBM |
 | Backend | FastAPI, PostgreSQL with PostGIS |
-| Frontend | Next.js, MapLibre GL JS, Tailwind CSS |
+| Frontend | Next.js, MapLibre GL JS, Tailwind CSS, Framer Motion |
 | Hosting | Vercel |
 
 Only the frontend exists today. The other parts are planned.
