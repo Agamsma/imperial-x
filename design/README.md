@@ -1,12 +1,9 @@
 # design/
 
-**Status: planned.**
+System design for VajraNow.
 
-This folder will hold the VajraNow system design:
+- [architecture.md](architecture.md): the full flow (Ingest, Align, Predict, Decide, Show), grid and timing, warning logic, and verification plan.
 
-- Architecture diagram (Ingest, Align, Predict, Decide, Show)
-- Data flow and the 2 km, 10 minute grid spec
-- Dashboard wireframes
-- Warning logic: how model output maps to IMD colours and arrival windows
+**Status: design only.** The same flow is drawn on the website, in the "How it works" section (`app/_components/FlowDiagram.tsx`).
 
-For now, the architecture is drawn on the website, in the "How it works" section of the landing page (`app/_components/FlowDiagram.tsx`).
+Planned: dashboard wireframes and a data flow diagram for the live feed setup.
