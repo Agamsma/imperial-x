@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-accent: #1f4e79;
+  --color-accent-soft: #e8eef5;
+  --color-ink: #16202b;
+  --color-muted: #5a6573;
+  --color-line: #e3e7ec;
+  --color-haz-green: #2e9e4f;
+  --color-haz-yellow: #f2c94c;
+  --color-haz-orange: #f2994a;
+  --color-haz-red: #d64545;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #ffffff;
+  color: var(--color-ink);
+}
+
+/* Demo map place markers */
+.vn-marker {
+  --vn-color: #2e9e4f;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+}
+.vn-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: var(--vn-color);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px #16202b55, 0 1px 3px #0003;
+  transition: background 0.3s;
+}
+.vn-label {
+  font: 600 12px/1 var(--font-geist-sans), sans-serif;
+  color: #16202b;
+  background: #ffffffe6;
+  padding: 3px 6px;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px #0002;
+  white-space: nowrap;
+}
