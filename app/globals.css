@@ -2,7 +2,9 @@
 
 @theme inline {
   --color-accent: #1f4e79;
+  --color-accent-light: #8db9e3;
   --color-accent-soft: #e8eef5;
+  --color-night: #05080d;
   --color-ink: #16202b;
   --color-muted: #5a6573;
   --color-line: #e3e7ec;
@@ -10,7 +12,8 @@
   --color-haz-yellow: #f2c94c;
   --color-haz-orange: #f2994a;
   --color-haz-red: #d64545;
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -21,6 +24,70 @@ html {
 body {
   background: #ffffff;
   color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Landing page motion. All of it switches off for people who ask for reduced motion. */
+@keyframes vn-fog {
+  0%,
+  100% {
+    transform: translate3d(-4%, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(4%, -3%, 0) scale(1.08);
+  }
+}
+.vn-fog {
+  animation: vn-fog 28s ease-in-out infinite;
+}
+
+@keyframes vn-dash {
+  to {
+    stroke-dashoffset: -22;
+  }
+}
+.vn-dash-flow {
+  animation: vn-dash 1.4s linear infinite;
+}
+
+@keyframes vn-step-glow {
+  0%,
+  24%,
+  100% {
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+}
+.vn-step-glow {
+  animation: vn-step-glow 4s ease-in-out infinite;
+}
+
+@keyframes vn-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+.vn-bob {
+  animation: vn-bob 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .vn-fog,
+  .vn-dash-flow,
+  .vn-step-glow,
+  .vn-bob {
+    animation: none;
+  }
 }
 
 /* Demo map place markers */
@@ -41,7 +108,7 @@ body {
   transition: background 0.3s;
 }
 .vn-label {
-  font: 600 12px/1 var(--font-geist-sans), sans-serif;
+  font: 600 12px/1 var(--font-inter), sans-serif;
   color: #16202b;
   background: #ffffffe6;
   padding: 3px 6px;
