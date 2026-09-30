@@ -40,7 +40,7 @@ Every model result is checked against the pysteps baseline on the same storm cas
 
 ## Architecture
 
-The flow diagram is on the website, in the [How it works](https://vajranow.vercel.app/#how) section. Design notes will go in the [design/](design/) folder.
+The flow diagram is on the website, in the [How it works](https://vajranow.vercel.app/#how) section. Full design notes are in [design/architecture.md](design/architecture.md).
 
 ```
 Doppler radar   ─┐
