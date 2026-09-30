@@ -5,7 +5,7 @@
 Smart India Hackathon 2026 idea by **Team OmniSense** (Team ID 167415).
 Problem statement **SIH26084**: Convective scale nowcasting for Thunderstorms, Hail and Cloudbursts (06 hr). Ministry of Earth Sciences. Theme: Disaster Management. Category: Software.
 
-- **Website:** https://vajranow.vercel.app (update this link after deployment)
+- **Website:** https://vajranow.vercel.app
 - **Demo:** https://vajranow.vercel.app/demo (synthetic data only)
 
 > **Status: idea stage. The demo uses synthetic data.** Nothing here is a real forecast, and VajraNow is not running on live data.
