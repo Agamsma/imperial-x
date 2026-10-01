@@ -1,6 +1,8 @@
-# VajraNow architecture (planned)
+# VajraNow architecture
 
-**Status: design only.** Nothing below is built yet except the website and the synthetic `/demo`. No accuracy numbers exist, and none will be published until they are measured on real storm cases.
+**Status: the engine runs end to end on synthetic storms.** Real MOSDAC ingestion, training on real storms and live operation are still planned. No accuracy numbers are published; they will only come from real storm cases.
+
+Code map: each stage below is a module in [`vajranow/`](../vajranow/README.md). The API is [`vajranow/service.py`](../vajranow/service.py), served by [`api/index.py`](../api/index.py).
 
 ## 1. The flow
 
@@ -22,11 +24,11 @@ flowchart LR
 
 | Stage | What it does | Planned tools | Folder |
 | --- | --- | --- | --- |
-| Ingest | Pulls new radar volumes, satellite images and lightning strikes. Checks for missing or late files. | Python, cron / scheduler | `data_pipeline/` |
-| Align | Puts every input on one 2 km grid over the radar area, every 10 minutes. Removes radar clutter. | Python, xarray, pysteps utilities | `data_pipeline/` |
-| Predict | Baseline: pysteps optical flow extrapolation of radar reflectivity. Fusion: a PyTorch model that adds satellite cloud top cooling and lightning to predict growth and new cells. | pysteps, PyTorch | `models/` |
-| Decide | Turns forecast fields into hazard levels (IMD Green, Yellow, Orange, Red), arrival windows with a +/- range, and "not reliable" flags. Hail, gusts and cloudburst use LightGBM classifiers (experimental). | Python, LightGBM | `models/` |
-| Show | Serves results to the dashboard and draws them on the map. | FastAPI, PostgreSQL + PostGIS, Next.js, MapLibre | `api/`, `app/` |
+| Ingest | Today: synthetic radar, infrared and lightning, with quality checks for clutter, speckle and missing scans. Planned: reading MOSDAC radar and INSAT-3D/3DR files. | Python, numpy | `vajranow/synthetic.py`, `qc.py`, `observe.py` |
+| Align | Puts every input on one 2 km grid over the radar area, every 10 minutes. | Python, numpy | `vajranow/grid.py` |
+| Predict | TREC motion tracking, semi-Lagrangian extrapolation (the baseline), a fusion network for growth, decay and new storms, and a 20-member ensemble. Planned: comparison with pysteps. | numpy, PyTorch (training only) | `vajranow/motion.py`, `advection.py`, `fusion.py`, `ensemble.py`, `training/` |
+| Decide | IMD levels from probabilities, arrival windows as a range, hail, gust and cloudburst flags (experimental), new-storm zones, "not reliable" flags. Planned: LightGBM hazard models. | numpy | `vajranow/hazards.py`, `decide.py` |
+| Show | Warning polygons, radar frames and point forecasts served to the dashboard. Planned: PostgreSQL with PostGIS for history. | FastAPI, Next.js, MapLibre | `vajranow/contour.py`, `render.py`, `service.py`, `app/demo/` |
 
 ## 3. Grid and timing
 
@@ -46,13 +48,13 @@ The further ahead, the less detail we show. This is on purpose: skill drops quic
 3. If motion is unclear, the terrain is complex (for example the Western Ghats), or the models disagree, show **"Not reliable"** instead of a time.
 4. Colours follow the IMD scheme: Green (no warning), Yellow (be updated), Orange (be prepared), Red (take action).
 
-The `/demo` page runs a simple version of steps 1 to 3 on a made-up storm (`lib/storm.ts`).
+The engine implements these steps in `vajranow/decide.py`, using the 20 ensemble members for the window.
 
-## 5. Verification (planned)
+## 5. Verification
 
-- Every model is compared with the pysteps baseline on the same past storm cases.
-- Planned scores: probability of detection, false alarm ratio, critical success index, and timing error of arrival windows.
-- Results feed back into Decide as reliability flags, so places or situations where we do badly are marked "Not reliable".
+- Scores in `vajranow/verify.py`: probability of detection, false alarm ratio, critical success index, and the fractions skill score.
+- Today: every change is checked against plain extrapolation and persistence on held-out synthetic storms inside the test suite. These scores are never published as accuracy.
+- Planned: the same comparison, plus the pysteps baseline and arrival-time errors, on past Kerala storm cases from MOSDAC data. Results will feed back into Decide as reliability flags.
 
 ## 6. Data rules
 
