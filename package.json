@@ -5,10 +5,12 @@
   "scripts": {
     "predev": "node scripts/copy-maplibre-worker.mjs",
     "dev": "next dev",
+    "dev:api": "python -m uvicorn api.index:app --reload --port 8000",
     "prebuild": "node scripts/copy-maplibre-worker.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:py": "python -m pytest"
   },
   "dependencies": {
     "framer-motion": "^13.4.6",

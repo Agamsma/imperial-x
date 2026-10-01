@@ -1,11 +1,16 @@
 # api/
 
-**Status: planned. No code yet.**
+The Vercel entrypoint for the VajraNow engine API. The app itself lives in
+[`vajranow/service.py`](../vajranow/service.py).
 
-A FastAPI service that will serve nowcast results to the dashboard:
+- Docs (live): `/api/py/docs`
+- Reference: [docs/api.md](../docs/api.md)
 
-- Latest hazard polygons with IMD colour levels
-- Arrival windows for chosen places
-- Data feed health (radar, satellite, lightning)
+Run locally:
 
-Storage is planned in PostgreSQL with PostGIS. The current `/demo` page does not call any API. It uses synthetic data generated in `lib/storm.ts`.
+```bash
+pip install -r requirements.txt
+python -m uvicorn api.index:app --reload --port 8000
+```
+
+Every response is computed from synthetic storms. Not a real forecast.
