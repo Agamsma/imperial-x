@@ -1,6 +1,7 @@
 import Link from "next/link";
 import CountUp from "./_components/CountUp";
 import Dock from "./_components/Dock";
+import EngineStatus from "./_components/EngineStatus";
 import FlowDiagram from "./_components/FlowDiagram";
 import Grow from "./_components/Grow";
 import Hero from "./_components/Hero";
@@ -86,8 +87,17 @@ const STATUS_STYLE: Record<Status, string> = {
   future: "border border-white/15 text-white/55",
 };
 
+const ENGINE_PARTS = [
+  { title: "Quality checks", stat: "Clutter, speckle, gaps", body: "Removes ground clutter and speckle, and reports missing radar scans instead of hiding them." },
+  { title: "TREC tracking", stat: "30 km blocks", body: "Matches blocks of radar echo between scans to measure storm motion, with a confidence value for every cell." },
+  { title: "Extrapolation", stat: "2 km, every 10 min", body: "Moves storms along the motion (semi-Lagrangian advection): the baseline every other step must beat." },
+  { title: "Fusion network", stat: "17k weights", body: "Predicts growth, decay and new storms from radar, cloud top cooling and lightning. Trained on synthetic storms only." },
+  { title: "Ensemble", stat: "20 members", body: "Twenty slightly different futures turn into probabilities, so every warning says how sure it is." },
+  { title: "Warning logic", stat: "IMD colours", body: "Arrival windows as a range, hail, gust and cloudburst flags, and honest 'not reliable' labels." },
+];
+
 const ROADMAP = [
-  { title: "Idea", body: "Problem study, design and this demo with synthetic data.", current: true },
+  { title: "Idea", body: "Problem study, design, and a working engine running on synthetic storms (this site).", current: true },
   { title: "Replay prototype", body: "Run the pipeline on past storm cases from archived radar and satellite data.", current: false },
   { title: "Fusion model", body: "Train the AI fusion model and check it against the pysteps baseline.", current: false },
   { title: "Live feeds with IMD", body: "Connect live feeds, only with IMD approval and partnership.", current: false },
@@ -222,6 +232,76 @@ export default function Home() {
                 </Grow>
               ))}
             </div>
+          </Section>
+
+          {/* Engine */}
+          <Section
+            id="engine"
+            eyebrow="Under the hood"
+            title="The engine already runs"
+            intro="Every step of the flow above is working code behind an open API. Until MOSDAC data is wired in, it runs on synthetic radar, satellite and lightning data made in code."
+          >
+            <Reveal className="-mt-4 mb-10">
+              <EngineStatus />
+            </Reveal>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {ENGINE_PARTS.map((p, i) => (
+                <Reveal key={p.title} delay={(i % 3) * 0.08}>
+                  <TiltCard className="h-full p-7">
+                    <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent-light">{p.stat}</p>
+                    <h3 className="mt-3 text-lg font-semibold">{p.title}</h3>
+                    <p className="mt-2 leading-relaxed text-white/60">{p.body}</p>
+                  </TiltCard>
+                </Reveal>
+              ))}
+            </div>
+            <Reveal className="mt-10">
+              <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr] lg:items-center">
+                <div>
+                  <h3 className="font-serif text-2xl text-white sm:text-3xl">Ask it about any place</h3>
+                  <p className="mt-3 leading-relaxed text-white/60">
+                    The dashboard reads everything from the engine&apos;s API, so any other system can too. Click anywhere on the demo map for a
+                    point forecast, or call the API directly.
+                  </p>
+                  <div className="mt-6 flex flex-wrap gap-3 text-sm">
+                    <Link href="/method" className="rounded-full border border-white/25 px-4 py-2 text-white/85 transition-colors hover:border-white hover:text-white">
+                      Read the method
+                    </Link>
+                    <a href="/api/py/docs" className="rounded-full border border-white/25 px-4 py-2 text-white/85 transition-colors hover:border-white hover:text-white">
+                      API docs
+                    </a>
+                  </div>
+                </div>
+                <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#0a121d] shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
+                  <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2.5">
+                    <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
+                    <span className="ml-2 font-mono text-[11px] text-white/45">Example response (synthetic storm)</span>
+                  </div>
+                  <pre className="overflow-x-auto p-5 font-mono text-[12.5px] leading-relaxed text-white/80">
+                    <span className="text-accent-light">GET</span> /api/py/v1/nowcast/kochi-squall/point?lon=76.40&amp;lat=10.15
+                    {"\n\n"}
+                    {`{
+  "level": "red",
+  "arrival": {
+    "status": "expected",
+    "text": "20 to 50 min",
+    "most_likely": 30,
+    "chance": 100,
+    "confidence": "medium"
+  },
+  "hazards": [
+    "Lightning likely",
+    "Hail signal (experimental)",
+    "Damaging gusts possible (experimental)"
+  ],
+  "rain_next_hour_mm": { "median": 40, "p90": 49 }
+}`}
+                  </pre>
+                </div>
+              </div>
+            </Reveal>
           </Section>
 
           {/* Hazards */}
@@ -364,8 +444,8 @@ export default function Home() {
                 See how a warning <span className="italic">would</span> look
               </h2>
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/60">
-                The demo replays a made-up storm over Kerala: hazard zones, arrival windows with a range, and places where we
-                say the forecast is not reliable.
+                The demo runs the engine on three made-up storm days over Kerala: warning zones, storm tracks, arrival windows with a range,
+                new storms seen first by satellite, and places where we say the forecast is not reliable.
               </p>
               <Link
                 href="/demo"
