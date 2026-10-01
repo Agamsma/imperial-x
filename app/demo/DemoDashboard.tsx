@@ -35,7 +35,7 @@ function Chip({ children, dot }: { children: React.ReactNode; dot: "ok" | "warn"
   );
 }
 
-export default function DemoDashboard() {
+export default function DemoDashboard({ notice }: { notice?: string }) {
   const [step, setStep] = useState(0);
   const [playing, setPlaying] = useState(false);
   const arrivals = useMemo(() => arrivalWindows(), []);
@@ -67,6 +67,7 @@ export default function DemoDashboard() {
       <div className="bg-[#16202b] px-4 py-2 text-center text-sm font-semibold text-white">
         Illustrative demo. Synthetic data, not a real forecast.
       </div>
+      {notice && <div className="border-b border-line bg-accent-soft px-4 py-2 text-center text-sm text-accent">{notice}</div>}
 
       <header className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-line bg-white px-4 py-3">
         <Link href="/" className="text-lg font-bold text-accent">

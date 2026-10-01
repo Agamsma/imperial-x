@@ -116,3 +116,92 @@ body {
   box-shadow: 0 1px 2px #0002;
   white-space: nowrap;
 }
+
+/* Engine dashboard map elements */
+.vn-marker-btn {
+  pointer-events: auto;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+.vn-marker-btn:focus-visible .vn-label {
+  outline: 2px solid #1f4e79;
+  outline-offset: 1px;
+}
+.vn-selected .vn-dot {
+  width: 18px;
+  height: 18px;
+  box-shadow: 0 0 0 3px #1f4e79, 0 1px 3px #0003;
+}
+.vn-selected .vn-label {
+  background: #1f4e79;
+  color: #fff;
+}
+.vn-cell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: #1f4e79;
+  color: #fff;
+  font: 700 12px/1 var(--font-inter), sans-serif;
+  box-shadow: 0 0 0 2px #fff, 0 1px 4px #0004;
+  pointer-events: none;
+}
+.vn-cell.static {
+  position: static;
+  box-shadow: none;
+}
+.vn-point {
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: #fff;
+  border: 3px solid #1f4e79;
+  box-shadow: 0 1px 4px #0005;
+}
+.vn-popup .maplibregl-popup-content {
+  border-radius: 10px;
+  padding: 10px 12px;
+  font: 400 12px/1.4 var(--font-inter), sans-serif;
+  color: #16202b;
+}
+.vn-pop-title {
+  font-weight: 700;
+  font-size: 13px;
+}
+.vn-pop-sub {
+  color: #5a6573;
+  font-size: 11px;
+}
+.vn-pop-body {
+  margin-top: 6px;
+}
+.vn-pop-body span {
+  color: #5a6573;
+}
+.vn-pop-strip {
+  display: flex;
+  gap: 2px;
+  margin-top: 8px;
+}
+.vn-pop-strip span {
+  flex: 1;
+  height: 10px;
+  border-radius: 2px;
+}
+.vn-pop-scale {
+  display: flex;
+  justify-content: space-between;
+  color: #5a6573;
+  font-size: 10px;
+  margin-top: 2px;
+}
+.vn-pop-meta {
+  margin-top: 6px;
+  color: #5a6573;
+  font-size: 11px;
+}

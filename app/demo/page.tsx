@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import DemoDashboard from "./DemoDashboard";
+import DemoApp from "./DemoApp";
 
 export const metadata: Metadata = {
   title: "Demo | VajraNow",
-  description: "Illustrative VajraNow dashboard with synthetic data. Not a real forecast.",
+  description: "VajraNow dashboard running the nowcasting engine on synthetic storms. Not a real forecast.",
 };
 
 export default function DemoPage() {
-  return <DemoDashboard />;
+  return <DemoApp />;
 }
