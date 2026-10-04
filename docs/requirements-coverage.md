@@ -1,7 +1,8 @@
 # Requirements coverage (SIH26084)
 
 How VajraNow covers each output the problem statement asks for: what exists today, and how
-each output will be built and checked. Status words match the final idea deck.
+each output will be built and checked. Status words match the final idea deck. The official
+problem statement text is in [ps-statement.md](ps-statement.md).
 
 **Where things stand**
 
@@ -11,6 +12,11 @@ each output will be built and checked. Status words match the final idea deck.
 
 Nothing below is validated. No skill scores for any hazard exist yet.
 
+**Real data so far.** Archived-file ingestion is planned for the dashboard pipeline. Real MOSDAC
+files have so far been processed only in the separate baseline study
+([validation/real_radar](../validation/real_radar/)); the engine and the dashboard run on
+synthetic data.
+
 ## Required outputs
 
 The middle column is the deck's plan: **planned predictors > labels > verification**.
@@ -18,15 +24,41 @@ The middle column is the deck's plan: **planned predictors > labels > verificati
 | Output | Planned predictors > labels > verification (not yet validated) | Status | What the demo does today |
 | --- | --- | --- | --- |
 | Convective initiation | IR cooling rate, new echoes > later radar echo > POD, FAR | Demo | New-storm zones where synthetic cloud tops cool fast and radar sees little yet. |
-| Lightning density | Radar + IR features > IITM flashes, ISS-LIS checks > fractions skill | Proxy | Chance of echo of 40 dBZ or more (a radar proxy). Lightning shown on the map is synthetic. |
-| Hail probability | Echo >= 50 dBZ above the 0 C level, VIL, growth > hail reports (sparse) > POD, FAR, reliability | Flag | Flag where column-maximum echo reaches 55 dBZ. Kept out of the alert levels. |
-| Downburst velocity | Doppler velocity, echo-top collapse, ERA5 dry layer > AWS gusts > gust error, POD, FAR | Proxy | Strong-wind proxy: a cell of 50 dBZ or more moving 30 km/h or faster. No wind speed is estimated. Kept out of the alert levels. |
-| Cloudburst | 1 h rain >= 100 mm from Z-R > rain gauges > POD, FAR | Experimental | Chance of 100 mm in the next hour, from reflectivity with Z = 300 R^1.4 (capped at 53 dBZ). The Z-R relation is not tuned for Indian radars. |
-| 0 to 6 h horizon | See the lead-time tiers below > verify by lead time | Proposed | 0 to 120 min forecast in 10-minute steps, then a coarse area outlook to 6 h. |
+| Lightning density | Radar + IR features > IITM flashes (planned label), ISS-LIS spot checks (planned) > fractions skill | Proxy | Chance of echo of 40 dBZ or more (a radar proxy). Lightning shown on the map is synthetic. |
+| Hail probability | Echo >= 50 dBZ above the 0 C level (echo height), VIL, growth > hail reports (sparse) > hit rate (POD), false alarms (FAR), reliability | Flag | Flag where column-maximum echo reaches 55 dBZ. Kept out of the alert levels. Not validated. |
+| Downburst velocity | Doppler velocity, echo-top collapse, dry layer aloft (ERA5 profiles for retrospective development; NWP forecast profiles for live use) > AWS station gusts > gust error, POD, FAR | Proxy | Strong-wind proxy: a cell of 50 dBZ or more moving 30 km/h or faster. No wind speed is estimated. Kept out of the alert levels. |
+| Cloudburst | 1 h rain >= 100 mm from Z-R > rain gauges (planned check) > POD, FAR | Experimental | Chance of 100 mm in the next hour, from reflectivity with Z = 300 R^1.4 (capped at 53 dBZ). The Z-R relation is not tuned for Indian radars. |
+| 0 to 6 h horizon | See the lead-time tiers below > verify by lead time | Proposed | 0 to 120 min forecast in 10-minute steps, then a coarse area outlook to 6 h from advected storm areas and new-storm zones. Planned for 3 to 6 h: blend extrapolation with weather-model (NWP) guidance. |
+
+Station gusts measure the wind at the surface. They can verify the surface wind a downburst
+produces, but not the downburst velocity itself.
 
 **The label sources still need to be obtained.** We do not yet have IITM lightning flashes,
 hail reports, AWS gust records or rain-gauge data for any test period. ISS-LIS and ERA5 are
 open but are retrospective only. Until labels exist, none of the hazard outputs can be scored.
+
+## Checked against the official problem statement
+
+Each ask in [ps-statement.md](ps-statement.md), and where VajraNow stands.
+
+| Problem statement asks for | Where VajraNow stands |
+| --- | --- |
+| 0 to 6 h lead time | Demo: 0 to 120 min forecast plus a coarse outlook to 6 h. NWP blend for 3 to 6 h planned |
+| 1 to 3 km resolution | 2 km output grid. Real detail is coarser: satellite about 4 km, radar beam widens with range |
+| Real-time system | Not yet. The demo replays synthetic storms. Authorised live feeds planned, after IMD and IITM approval |
+| Multi-source data fusion | Demo: a small CNN fuses synthetic radar, infrared and lightning. Trained on synthetic storms only |
+| Ingest high-frequency streams | Synthetic inputs today. Archived-file ingestion planned for the dashboard pipeline; real files processed only in the baseline study |
+| DWR reflectivity and velocity fields | Reflectivity used (baseline study). Velocity not yet processed |
+| INSAT-3D/3DR thermal infrared | INSAT-3DR TIR1 read in the baseline study; synthetic infrared in the demo |
+| Ground-based lightning networks | Not yet. IITM data is a planned request; ISS-LIS (from space) planned for spot checks |
+| Detect early convective initiation | Demo: new-storm zones from synthetic cloud-top cooling |
+| Lightning strike density | Radar proxy (chance of echo of 40 dBZ or more) |
+| Hail probability | 55 dBZ flag, not validated |
+| Downburst velocity | Strong-wind proxy only; no velocity estimated |
+| Cloudburst thresholds | Experimental Z-R estimate of 100 mm in an hour |
+| GIS dashboard with 1 to 3 km hazard zones | Built (MapLibre, 2 km warning polygons), on synthetic data |
+| Live countdown clocks for storm arrivals | Not built. The dashboard shows arrival windows as a range (for example "20 to 50 min"), not a running clock |
+| Users: local administrations, aviation, farming | Local administrations and farmers are named users in the deck. Aviation is not addressed yet |
 
 ## Lead-time tiers
 
