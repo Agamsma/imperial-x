@@ -3,20 +3,27 @@
 A first check of the forecast idea on real data: TERLS Doppler radar and INSAT-3DR satellite
 files from MOSDAC, 10 and 11 May 2026.
 
-**Result: motion extrapolation does not beat persistence.** Over 32 forecast pairs, moving the
-radar echoes along their measured motion scored about the same as not moving them at all
-(+15 min), and worse at +30 min. This is a negative finding and we keep it as one. Two days
-are too few to say more. This is team analysis, not an official result.
+**Result: motion helps when storms move (11 May, ~12 km/h) but not on slow storms (10 May,
+~6 km/h). Pooled over both days, motion extrapolation does not beat persistence. So the model
+must forecast growth and decay, not just motion.** The pooled result is a negative finding and
+we keep it as one. Two days are too few for a general claim. This is team analysis, not an
+official result.
 
-| Lead (nominal) | Pairs | Persistence CSI | Motion extrapolation CSI |
-| --- | --- | --- | --- |
-| +15 min | 32 (18 + 14) | 0.62 | 0.61 |
-| +30 min | 32 (18 + 14) | 0.43 | 0.39 |
+| Day | Median cell motion | Pairs | +15 min: persistence vs motion | +30 min: persistence vs motion | Better |
+| --- | --- | --- | --- | --- | --- |
+| 10 May | 6.3 km/h | 18 | 0.596 vs 0.567 | 0.486 vs 0.398 | Persistence |
+| 11 May | 12.3 km/h | 14 | 0.642 vs 0.664 | 0.366 vs 0.388 | Motion |
+| Both days, pooled | | 32 | 0.62 vs 0.61 | 0.43 vs 0.39 | Persistence (by 0.01 at +15 min) |
 
-CSI at echo >=20 dBZ with 3 km tolerance, pair-weighted over both days. Every number is in
-[`skill_results.json`](skill_results.json), including the score of every single pair.
+CSI at echo >=20 dBZ with 3 km tolerance; the pooled row is pair-weighted over both days.
+Median cell motion: for each pair of scans, the median optical-flow speed of echo pixels
+(>=20 dBZ), then the median over the day's scan pairs (`skill.py`, 1 pixel taken as 1 km).
+Every number is in [`skill_results.json`](skill_results.json), including the score of every
+single pair.
 
-![Skill vs lead time](figures/skill_only.png)
+![Skill by day: motion helps only when storms move](figures/skill_by_day.png)
+
+![Skill vs lead time, both days pooled](figures/skill_only.png)
 
 ![Storm life cycle and skill](figures/terls-may10-11.png)
 
@@ -31,12 +38,13 @@ runs on synthetic storms only and has not been run on these files.
 | `skill.py` | Step 2. Persistence and motion forecasts, CSI scores |
 | `sat_cold_cloud.py` | Step 3. INSAT-3DR cold cloud tops over the radar area |
 | `make_figure.py` | Step 4. Two-panel figure: storm life cycle and skill |
-| `make_skill_figure.py` | Step 5. Skill figure used on the deck and the website |
+| `make_skill_figure.py` | Step 5. Pooled skill figure (deck V3) |
+| `make_day_figure.py` | Step 6. Skill by day, used on the deck (V4), README and website |
 | `common.py` | Shared helpers: finding files, reading times, manifest |
 | `input_manifest.csv` | Every input file: date, time (UTC), size, SHA-256, used or skipped |
 | `skill_results.json` | All scores: per day, pooled, and per pair |
 | `sat_cold_cloud.json` | Cold cloud fraction per satellite image |
-| `figures/` | The two figures above |
+| `figures/` | The three figures above |
 | `requirements.txt` | Pinned Python packages |
 
 ## Run it
@@ -80,6 +88,7 @@ python skill.py
 python sat_cold_cloud.py       # or: python sat_cold_cloud.py --data /path/to/mosdac
 python make_figure.py
 python make_skill_figure.py
+python make_day_figure.py
 ```
 
 `composite.py` takes about a minute for the 44 radar files. The other steps take seconds.
@@ -90,7 +99,8 @@ python make_skill_figure.py
 - `input_manifest.csv`: 58 rows (44 radar, 14 satellite); one radar file skipped
 - `skill_results.json`: `headline` shows 32 pairs, 0.62 / 0.61 at +15 min and 0.43 / 0.39 at +30 min
 - `sat_cold_cloud.json`: 14 images
-- `figures/terls-may10-11.png` and `figures/skill_only.png`
+- `figures/terls-may10-11.png`, `figures/skill_only.png` and `figures/skill_by_day.png`
+- `../../public/real-data/skill-by-day.png` (the website copy, written by step 6)
 
 `skill.py` prints the headline numbers at the end. If yours differ, check the SHA-256 values
 first, then the package versions.
@@ -193,12 +203,15 @@ inside a 1 deg x 1 deg box centred on 8.6 N, 76.6 E (where the 10 May storms wer
 median brightness temperature in that box. No parallax correction. Used only for the
 storm life cycle figure; it is not used in the skill scores.
 
-### Step 4 and 5: figures
+### Steps 4 to 6: figures
 
 `make_figure.py` draws the radar area >= 30 dBZ (km², one pixel is about 1 km²) and the
 satellite cold cloud fraction inside the same box on 10 May, next to the skill bars.
 `make_skill_figure.py` draws the skill figure used on slide 2 of the deck and on the website
-(`public/real-data/skill-only.png`). Both read only the JSON results.
+in its V3 version (`public/real-data/skill-only.png`). `make_day_figure.py` draws the per-day
+figure used on the V4 deck, the README and the website (`figures/skill_by_day.png` and
+`public/real-data/skill-by-day.png`); it reads the storm speeds, pair counts, pooled values and
+the winner of each day from `skill_results.json`. All three read only the JSON results.
 
 ## Limits
 

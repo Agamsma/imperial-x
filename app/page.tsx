@@ -14,7 +14,7 @@ import { GITHUB_URL, TEAM, VALIDATION_URL } from "@/lib/site";
 const TIERS = [
   { range: "0 to 1 h", title: "Main target", body: "2 km probability map from tracked storms", grow: 1, shade: "bg-accent border-accent" },
   { range: "1 to 3 h", title: "Wider probability zones", body: "Coarser zones; a skill-based reliability gate is proposed", grow: 2, shade: "bg-[#2a5f91]/70 border-[#3b76ad]/60" },
-  { range: "3 to 6 h", title: "Area outlook", body: "Broad regions only. Planned: blend extrapolation with NWP guidance", grow: 3, shade: "bg-accent-light/[0.08] border-accent-light/25" },
+  { range: "3 to 6 h", title: "Area outlook", body: "Broad regions only. Blend with NCMRWF model guidance (planned)", grow: 3, shade: "bg-accent-light/[0.08] border-accent-light/25" },
 ];
 
 const ICON = { stroke: "currentColor", strokeWidth: 1.6, strokeLinecap: "round", strokeLinejoin: "round", fill: "none" } as const;
@@ -22,13 +22,15 @@ const ICON = { stroke: "currentColor", strokeWidth: 1.6, strokeLinecap: "round",
 const HAZARDS = [
   {
     name: "Lightning",
-    body: "Chance of lightning from a radar proxy (echo of 40 dBZ or more). IITM flash data is planned.",
+    body: "Chance of lightning from a radar proxy (echo of 40 dBZ or more).",
+    next: "Echo of 35 dBZ or more at the −10 °C level (temperature from ERA5), then IITM flash data as labels.",
     tag: "Radar proxy",
     icon: <path {...ICON} d="M13.5 3 6 13.2h5.2L10 21l7.5-10.2h-5.2z" />,
   },
   {
     name: "New storms forming",
     body: "Early signs of new cells from fast-cooling satellite cloud tops.",
+    next: "Checked against the radar echoes that follow.",
     tag: "Demo",
     icon: (
       <>
@@ -40,6 +42,7 @@ const HAZARDS = [
   {
     name: "Hail",
     body: "A flag where radar echo reaches 55 dBZ. Kept out of the alert levels.",
+    next: "45 dBZ echo at least 1.4 km above the freezing level (Waldvogel), plus VIL and echo-top height, from the 3D radar volume.",
     tag: "Flag only",
     icon: (
       <>
@@ -52,7 +55,8 @@ const HAZARDS = [
   },
   {
     name: "Extreme rain / cloudburst",
-    body: "Chance of 100 mm in an hour, estimated from reflectivity with a Z-R relation.",
+    body: "Radar rain of 50 mm and 100 mm or more in an hour, estimated with a Z-R relation. 100 mm/h is the cloudburst threshold as widely reported.",
+    next: "Checked against rain gauges.",
     tag: "Experimental",
     icon: (
       <>
@@ -62,8 +66,9 @@ const HAZARDS = [
     ),
   },
   {
-    name: "Damaging gusts",
+    name: "Downburst / damaging gusts",
     body: "A strong-wind proxy: fast-moving cells with a severe core. Downburst speed is not measured yet.",
+    next: "Low-level divergence in the radar's radial velocity (VEL), which is in our files but not yet processed.",
     tag: "Proxy",
     icon: <path {...ICON} d="M3 9h11a3 3 0 1 0-3-3M3 13h15a3 3 0 1 1-3 3M3 17h7" />,
   },
@@ -72,11 +77,12 @@ const HAZARDS = [
 type Status = "ordered" | "open" | "planned" | "future";
 
 const SOURCES: { name: string; what: string; use: string; status: Status; label: string }[] = [
-  { name: "TERLS Doppler radar (MOSDAC)", what: "Reflectivity used, velocity not yet processed. Scans about 15 min apart in our files", use: "Storm cells and motion", status: "ordered", label: "Ordered" },
-  { name: "INSAT-3D/3DR (MOSDAC)", what: "Infrared cloud-top imagery, 30 min frames in our order", use: "Storm growth and new cells", status: "ordered", label: "Ordered" },
+  { name: "TERLS Doppler radar (MOSDAC)", what: "3D reflectivity + velocity, ~15 min scans. Reflectivity used so far; velocity not yet processed", use: "Storm cells, motion, hail and downburst signals", status: "ordered", label: "2 days (10–11 May 2026) in hand, more ordered" },
+  { name: "INSAT-3DR (MOSDAC)", what: "Infrared cloud tops, 30 min frames", use: "Storm growth and new cells", status: "ordered", label: "In hand, more ordered" },
+  { name: "Cherrapunji radar (MOSDAC)", what: "Radar files we hold for 10 and 12 May 2026", use: "Planned second region for cloudburst work", status: "planned", label: "Held, not used yet" },
   { name: "ISS-LIS (NASA Earthdata)", what: "Lightning flashes seen from space, spot passes only", use: "Spot checks of the lightning proxy", status: "open", label: "Free" },
-  { name: "IITM lightning network", what: "Ground strike locations, 80+ sensors", use: "Lightning labels and checks", status: "planned", label: "Planned request" },
-  { name: "ERA5 / NCMRWF", what: "Weather context. ERA5 is retrospective only", use: "Instability and wind context", status: "open", label: "ERA5 open, NCMRWF planned" },
+  { name: "IITM lightning network", what: "Ground strike locations, 80+ sensors", use: "Lightning labels and checks", status: "planned", label: "To request" },
+  { name: "ERA5 / NCMRWF", what: "Instability, freezing level, wind. ERA5 for past cases; NCMRWF model forecasts for 3–6 h", use: "Context, and hand-over at 3–6 h", status: "open", label: "ERA5 open, NCMRWF to request" },
   { name: "Authorised live feeds", what: "Live IMD radar for real-time runs", use: "Live operation", status: "future", label: "Needs IMD approval" },
 ];
 
@@ -103,6 +109,13 @@ const ROADMAP = [
   { title: "CAP export, live feeds", body: "CAP export for authorised official channels. Live runs only after IMD and IITM approval.", current: false },
 ];
 
+// Per-day CSI at >=20 dBZ with 3 km tolerance, from validation/real_radar/skill_results.json.
+const DAY_ROWS = [
+  { day: "10 May", note: "slow storms, 6.3 km/h, 18 pairs: persistence wins", l15: "0.596 vs 0.567", l30: "0.486 vs 0.398" },
+  { day: "11 May", note: "moving storms, 12.3 km/h, 14 pairs: motion wins", l15: "0.642 vs 0.664", l30: "0.366 vs 0.388" },
+  { day: "Both days", note: "pooled, 32 pairs", l15: "0.62 vs 0.61", l30: "0.43 vs 0.39" },
+];
+
 const STATUS_ROWS = [
   {
     title: "Built",
@@ -110,7 +123,11 @@ const STATUS_ROWS = [
   },
   {
     title: "Preliminary evidence",
-    items: ["Two-day real-data baseline: TERLS radar and INSAT-3DR, 10 and 11 May 2026", "Motion extrapolation does not beat persistence"],
+    items: [
+      "Two-day real-data baseline: TERLS radar and INSAT-3DR, 10 and 11 May 2026",
+      "Motion helps when storms move (11 May) but not on slow storms (10 May); pooled, it does not beat persistence",
+      "So the model must forecast growth and decay, not just motion",
+    ],
   },
   {
     title: "Planned",
@@ -118,7 +135,7 @@ const STATUS_ROWS = [
       "Real replay, calibrated hazards, reliability gate",
       "LightGBM hazard models, pysteps comparison",
       "CAP export (no agency endorsement implied)",
-      "NWP blend for 3 to 6 h",
+      "Blend with NCMRWF model guidance for 3 to 6 h",
       "Archived-file ingestion, then authorised live feeds",
     ],
   },
@@ -199,7 +216,7 @@ export default function Home() {
               <Reveal delay={0.2}>
                 <TiltCard className="flex h-full flex-col p-7">
                   <p className="font-serif text-4xl text-accent-light">
-                    <CountUp to={2558} />
+                    <CountUp to={2560} />
                   </p>
                   <h3 className="mt-4 text-lg font-semibold">Lightning deaths in India in 2023</h3>
                   <p className="mt-2 leading-relaxed text-white/60">
@@ -207,7 +224,7 @@ export default function Home() {
                     to get indoors.
                   </p>
                   <p className="mt-auto pt-5 text-xs text-white/40">
-                    Source: NCRB, Accidental Deaths and Suicides in India (ADSI) 2023
+                    39.7% of all deaths from forces of nature. Source: NCRB, Accidental Deaths and Suicides in India (ADSI) 2023
                   </p>
                 </TiltCard>
               </Reveal>
@@ -220,7 +237,7 @@ export default function Home() {
             glow="right"
             eyebrow="How it works (planned)"
             title="From raw radar to a clear decision"
-            intro="With each new radar scan (about every 15 minutes), VajraNow will put radar, satellite, lightning and weather-model data on one 2 km output grid, forecast where storms move and grow, and turn that into IMD colour levels with arrival ranges. Real detail is coarser than 2 km: satellite pixels are about 4 km and the radar beam widens with range."
+            intro="Storms build in minutes, so we nowcast 0–3 h from fresh observations and hand over to NCMRWF model guidance for 3–6 h. With each new radar scan (about every 15 minutes), VajraNow will put radar, satellite, lightning and weather-model data on one 2 km output grid, forecast where storms move and grow, and turn that into IMD colour levels with arrival ranges. Real detail is coarser than 2 km: satellite pixels are about 4 km and the radar beam widens with range."
           >
             <Reveal>
               <div className="rounded-3xl border border-white/10 bg-white/[0.025] p-4 shadow-[0_30px_80px_rgba(0,0,0,0.35)] backdrop-blur-sm sm:p-8">
@@ -331,17 +348,17 @@ export default function Home() {
             glow="right"
             eyebrow="Preliminary evidence"
             title="A first look at real radar"
-            intro="A two-day baseline on real TERLS radar and INSAT-3DR files from MOSDAC, 10 and 11 May 2026. Moving radar echoes along their measured motion did not beat keeping them where they are. We report that as it is."
+            intro="A two-day baseline on real TERLS radar and INSAT-3DR files from MOSDAC, 10 and 11 May 2026. Motion helps when storms move (11 May, ~12 km/h) but not on slow storms (10 May, ~6 km/h). Pooled over both days, motion extrapolation does not beat persistence. So the model must forecast growth and decay, not just motion."
           >
             <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr] lg:items-center">
               <Reveal>
                 <figure className="overflow-hidden rounded-2xl border border-white/10 bg-white p-3">
                   {/* eslint-disable-next-line @next/next/no-img-element -- static chart, shown at its own size */}
                   <img
-                    src="/real-data/skill-only.png"
-                    alt="Bar chart of CSI by lead time. At +15 minutes persistence scores 0.62 and motion extrapolation 0.61. At +30 minutes persistence scores 0.43 and motion extrapolation 0.39. 32 forecast pairs, 10 and 11 May 2026."
+                    src="/real-data/skill-by-day.png"
+                    alt="Bar chart of CSI by day and lead time. 10 May, slow storms at about 6 km/h: persistence 0.60 vs motion 0.57 at +15 minutes and 0.49 vs 0.40 at +30 minutes, persistence wins. 11 May, moving storms at about 12 km/h: persistence 0.64 vs motion 0.66 at +15 minutes and 0.37 vs 0.39 at +30 minutes, motion wins."
                     width={1688}
-                    height={1019}
+                    height={900}
                     loading="lazy"
                     className="h-auto w-full"
                   />
@@ -352,29 +369,28 @@ export default function Home() {
                   <table className="w-full text-left text-sm">
                     <thead className="text-white/45">
                       <tr>
-                        <th className="px-4 py-3 font-semibold">Lead</th>
-                        <th className="px-4 py-3 font-semibold">Persistence</th>
-                        <th className="px-4 py-3 font-semibold">Motion</th>
+                        <th className="px-4 py-3 font-semibold">CSI, persistence vs motion</th>
+                        <th className="px-4 py-3 font-semibold">+15 min</th>
+                        <th className="px-4 py-3 font-semibold">+30 min</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className="border-t border-white/[0.07]">
-                        <td className="px-4 py-3 font-medium">+15 min</td>
-                        <td className="px-4 py-3 text-white/70">0.62</td>
-                        <td className="px-4 py-3 text-white/70">0.61</td>
-                      </tr>
-                      <tr className="border-t border-white/[0.07]">
-                        <td className="px-4 py-3 font-medium">+30 min</td>
-                        <td className="px-4 py-3 text-white/70">0.43</td>
-                        <td className="px-4 py-3 text-white/70">0.39</td>
-                      </tr>
+                      {DAY_ROWS.map((r) => (
+                        <tr key={r.day} className="border-t border-white/[0.07]">
+                          <td className="px-4 py-3">
+                            <span className="font-medium">{r.day}</span>
+                            <span className="block text-xs text-white/50">{r.note}</span>
+                          </td>
+                          <td className="px-4 py-3 text-white/70">{r.l15}</td>
+                          <td className="px-4 py-3 text-white/70">{r.l30}</td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
                 <p className="mt-4 text-sm leading-relaxed text-white/55">
                   CSI = hits / (hits + misses + false alarms), echo of 20 dBZ or more, 3 km tolerance. 32 forecast pairs (18 on 10 May, 14
-                  on 11 May). Team analysis of two days, so it says little about skill in general. The VajraNow engine has not been run on
-                  these files.
+                  on 11 May). Team analysis. Two days are too few for a general claim. The VajraNow engine has not been run on these files.
                 </p>
                 <a
                   href={VALIDATION_URL}
@@ -408,7 +424,7 @@ export default function Home() {
             id="hazards"
             eyebrow="Hazards in the demo"
             title="Five hazards, honestly labelled"
-            intro="Each hazard is labelled with what it is today. None of them is validated yet."
+            intro="Each hazard is labelled with what it is today. None of them is validated yet. The next steps use the full 3D TERLS volume (81 levels, 250 m apart) and the radial velocity already in our radar files; they are planned, not built."
           >
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {HAZARDS.map((h, i) => (
@@ -426,6 +442,9 @@ export default function Home() {
                     </div>
                     <h3 className="mt-5 text-lg font-semibold">{h.name}</h3>
                     <p className="mt-2 leading-relaxed text-white/60">{h.body}</p>
+                    <p className="mt-3 text-sm leading-relaxed text-white/50">
+                      <span className="font-semibold text-accent-light">Next (planned, not built):</span> {h.next}
+                    </p>
                   </TiltCard>
                 </Reveal>
               ))}

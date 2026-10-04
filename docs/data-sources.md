@@ -6,11 +6,12 @@ How VajraNow plans to get each dataset, and where we stand today.
 
 | Source | Used for | Access status |
 | --- | --- | --- |
-| MOSDAC TERLS Doppler radar | Storm cells and motion. Reflectivity used; velocity not yet processed | Ordered; files for 10 and 11 May 2026 used in the baseline |
-| MOSDAC INSAT-3D/3DR | Cloud top cooling, new storm growth | Ordered; INSAT-3DR files for 10 May 2026 used in the baseline |
+| MOSDAC TERLS Doppler radar | 3D reflectivity + velocity, ~15 min scans: storm cells and motion, later hail and downburst signals. Reflectivity used so far; velocity not yet processed | 2 days (10–11 May 2026) in hand and used in the baseline; more ordered |
+| MOSDAC INSAT-3DR | Infrared cloud tops (30 min frames): cloud-top cooling, new storm growth | In hand (10 May 2026, used in the baseline); more ordered |
+| MOSDAC Cherrapunji radar | Planned second region for cloudburst work | Files for 10 and 12 May 2026 held; not used yet |
 | ISS-LIS (NASA Earthdata) | Spot checks of lightning (retrospective only) | Free |
-| IITM lightning network | Lightning labels and checks | Planned request |
-| ERA5 (Copernicus) / NCMRWF | Weather context (ERA5 retrospective only) | ERA5 open; NCMRWF planned |
+| IITM lightning network | Lightning labels and checks | To request |
+| ERA5 (Copernicus) / NCMRWF | Instability, freezing level, wind. ERA5 for past cases; NCMRWF model forecasts for the 3–6 h hand-over | ERA5 open; NCMRWF to request |
 | SEVIR benchmark | Possible pre-training and testing (US data); not used yet | Open |
 | Live IMD radar | Live runs | Future, needs IMD approval |
 
@@ -21,14 +22,15 @@ How VajraNow plans to get each dataset, and where we stand today.
   1. Register at [mosdac.gov.in](https://www.mosdac.gov.in) (MOSDAC, Space Applications Centre, ISRO).
   2. Log in and request the radar product through the data order section.
   3. Wait for approval, then download the files from your order.
-- **Status:** ordered. 44 files for 10 and 11 May 2026 were received and used in the [real-data baseline](../validation/real_radar/).
+- **Status:** 2 days in hand: 44 files for 10 and 11 May 2026, used in the [real-data baseline](../validation/real_radar/). More are ordered.
+- **Also held:** Cherrapunji radar files (`RSCHR_*_L2B_STD.nc`) for 10 and 12 May 2026, a planned second region for cloudburst work. Not used yet.
 - **Terms:** for our own research use only. Do not upload these files to GitHub, the website, or any public place.
 
 ## 2. MOSDAC: INSAT-3D / INSAT-3DR imager
 
 - **What:** infrared images from the INSAT-3D and INSAT-3DR geostationary satellites. We plan to use the thermal infrared channel to track cloud top cooling, which is an early sign of a growing storm.
 - **How to get it:** same MOSDAC account. Choose the INSAT-3D or INSAT-3DR imager products and the time range you need.
-- **Status:** ordered. 14 INSAT-3DR imager L1B files for 10 May 2026 (30 min frames) were received and used in the baseline.
+- **Status:** in hand: 14 INSAT-3DR imager L1B files for 10 May 2026 (30 min frames), used in the baseline. More are ordered.
 - **Terms:** same as above. Research use only, no redistribution.
 
 ## 3. ERA5 reanalysis (Copernicus Climate Data Store)
@@ -58,7 +60,7 @@ How VajraNow plans to get each dataset, and where we stand today.
 
 - **What:** ground based lightning strike data from the Indian Institute of Tropical Meteorology (IITM), Pune.
 - **How to get it:** a formal data request to IITM, explaining the research use.
-- **Status:** planned request, not sent yet. Until we have it, the demo labels lightning as a radar proxy (chance of echo of 40 dBZ or more).
+- **Status:** to request (not sent yet). Until we have it, the demo labels lightning as a radar proxy (chance of echo of 40 dBZ or more).
 
 ## 6. Live IMD radar
 

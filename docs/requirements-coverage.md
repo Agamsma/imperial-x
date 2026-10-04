@@ -8,7 +8,7 @@ problem statement text is in [ps-statement.md](ps-statement.md).
 
 | Built | Preliminary evidence | Planned |
 | --- | --- | --- |
-| Synthetic engine: tracking, advection, a small CNN trained on synthetic storms, a 20-member ensemble (uncalibrated). Dashboard. API. | Two-day real-data baseline on TERLS radar and INSAT-3DR, 10 and 11 May 2026: motion extrapolation does not beat persistence ([validation/real_radar](../validation/real_radar/)). | Real replay, calibrated hazards, reliability gate, LightGBM, pysteps comparison, CAP export (no agency endorsement implied), NWP blend for 3 to 6 h, archived-file ingestion and authorised live feeds. |
+| Synthetic engine: tracking, advection, a small CNN trained on synthetic storms, a 20-member ensemble (uncalibrated). Dashboard. API. | Two-day real-data baseline on TERLS radar and INSAT-3DR, 10 and 11 May 2026: motion helps when storms move (11 May) but not on slow storms (10 May); pooled, motion extrapolation does not beat persistence ([validation/real_radar](../validation/real_radar/)). | Real replay, calibrated hazards, reliability gate, LightGBM, pysteps comparison, CAP export (no agency endorsement implied), blend with NCMRWF model guidance for 3 to 6 h, archived-file ingestion and authorised live feeds. |
 
 Nothing below is validated. No skill scores for any hazard exist yet.
 
@@ -19,16 +19,18 @@ synthetic data.
 
 ## Required outputs
 
-The middle column is the deck's plan: **planned predictors > labels > verification**.
+Matches the deck (V4): **today → next**, then the planned labels and checks. The "next" step
+is planned, not built. It uses the 3D TERLS volume (81 levels, 250 m apart) and the radial
+velocity (`VEL`) field that are already in our radar files.
 
-| Output | Planned predictors > labels > verification (not yet validated) | Status | What the demo does today |
-| --- | --- | --- | --- |
-| Convective initiation | IR cooling rate, new echoes > later radar echo > POD, FAR | Demo | New-storm zones where synthetic cloud tops cool fast and radar sees little yet. |
-| Lightning density | Radar + IR features > IITM flashes (planned label), ISS-LIS spot checks (planned) > fractions skill | Proxy | Chance of echo of 40 dBZ or more (a radar proxy). Lightning shown on the map is synthetic. |
-| Hail probability | Echo >= 50 dBZ above the 0 C level (echo height), VIL, growth > hail reports (sparse) > hit rate (POD), false alarms (FAR), reliability | Flag | Flag where column-maximum echo reaches 55 dBZ. Kept out of the alert levels. Not validated. |
-| Downburst velocity | Doppler velocity, echo-top collapse, dry layer aloft (ERA5 profiles for retrospective development; NWP forecast profiles for live use) > AWS station gusts > gust error, POD, FAR | Proxy | Strong-wind proxy: a cell of 50 dBZ or more moving 30 km/h or faster. No wind speed is estimated. Kept out of the alert levels. |
-| Cloudburst | 1 h rain >= 100 mm from Z-R > rain gauges (planned check) > POD, FAR | Experimental | Chance of 100 mm in the next hour, from reflectivity with Z = 300 R^1.4 (capped at 53 dBZ). The Z-R relation is not tuned for Indian radars. |
-| 0 to 6 h horizon | See the lead-time tiers below > verify by lead time | Proposed | 0 to 120 min forecast in 10-minute steps, then a coarse area outlook to 6 h from advected storm areas and new-storm zones. Planned for 3 to 6 h: blend extrapolation with weather-model (NWP) guidance. |
+| Output | Today (demo) | Next (planned, not built) | Labels > verification (planned) | Status |
+| --- | --- | --- | --- | --- |
+| Convective initiation | New-storm zones where synthetic cloud tops cool fast and radar sees little yet | INSAT IR cooling before the first radar echo | Later radar echo > POD, FAR | Demo |
+| Lightning density | Chance of echo of 40 dBZ or more (radar proxy). Lightning shown on the map is synthetic | Echo of 35 dBZ or more at the −10 °C level (temperature from ERA5), plus IR features | IITM flashes; ISS-LIS spot checks > fractions skill | Proxy |
+| Hail probability | Flag where column-maximum echo reaches 55 dBZ; kept out of the alert levels | 45 dBZ echo at least 1.4 km above the freezing level (Waldvogel criterion), plus VIL, echo-top height and growth | Hail reports (sparse) > hit rate (POD), false alarms (FAR), reliability | Flag |
+| Downburst velocity | Strong-wind proxy: a cell of 50 dBZ or more moving 30 km/h or faster; no wind speed estimated; kept out of the alert levels | Low-level radial-velocity divergence from `VEL` (in our files, not yet processed), echo-top collapse, dry layer aloft (ERA5 profiles for retrospective development; NCMRWF forecast profiles for live use) | AWS station gusts > gust error, POD, FAR | Proxy |
+| Cloudburst | Radar rain of 50 mm and 100 mm or more in an hour, from Z = 300 R^1.4 (capped at 53 dBZ); 100 mm/h is the cloudburst threshold as widely reported. Z-R not tuned for Indian radars | Same thresholds; Cherrapunji radar files we hold are a planned second region | Rain gauges (planned check) > POD, FAR | Experimental |
+| 0 to 6 h horizon | 0 to 120 min forecast in 10-minute steps, then a coarse area outlook to 6 h from advected storm areas and new-storm zones | 0–3 h nowcast from fresh observations; blend with NCMRWF model guidance for 3 to 6 h | Verify by lead time | 0–1 h demo |
 
 Station gusts measure the wind at the surface. They can verify the surface wind a downburst
 produces, but not the downburst velocity itself.
@@ -43,7 +45,7 @@ Each ask in [ps-statement.md](ps-statement.md), and where VajraNow stands.
 
 | Problem statement asks for | Where VajraNow stands |
 | --- | --- |
-| 0 to 6 h lead time | Demo: 0 to 120 min forecast plus a coarse outlook to 6 h. NWP blend for 3 to 6 h planned |
+| 0 to 6 h lead time | Demo: 0 to 120 min forecast plus a coarse outlook to 6 h. Blend with NCMRWF model guidance for 3 to 6 h planned |
 | 1 to 3 km resolution | 2 km output grid. Real detail is coarser: satellite about 4 km, radar beam widens with range |
 | Real-time system | Not yet. The demo replays synthetic storms. Authorised live feeds planned, after IMD and IITM approval |
 | Multi-source data fusion | Demo: a small CNN fuses synthetic radar, infrared and lightning. Trained on synthetic storms only |
@@ -66,10 +68,16 @@ Each ask in [ps-statement.md](ps-statement.md), and where VajraNow stands.
 | --- | --- |
 | 0 to 1 h | Main target. 2 km probability map from tracked storms. |
 | 1 to 3 h | Wider probability zones. A skill-based reliability gate is proposed. |
-| 3 to 6 h | Broad area outlook. Planned: blend extrapolation with NWP guidance for storm development. |
+| 3 to 6 h | Broad area outlook. Blend with NCMRWF model guidance for storm development (planned). |
+
+Storms build in minutes, so we nowcast 0–3 h from fresh observations and hand over to NCMRWF
+model guidance for 3–6 h.
 
 Confidence drops as lead time grows. The real-data baseline already shows CSI falling from
-about 0.6 at +15 min to about 0.4 at +30 min for echo position alone.
+about 0.6 at +15 min to about 0.4 at +30 min for echo position alone. It also shows that motion
+helps when storms move (11 May, ~12 km/h) but not on slow storms (10 May, ~6 km/h); pooled over
+both days, motion extrapolation does not beat persistence. So the model must forecast growth and
+decay, not just motion. Two days are too few for a general claim.
 
 ## Verification plan (planned)
 
@@ -97,7 +105,7 @@ Planned design, not built:
 
 - Radar lost: stale flag, no new alerts.
 - Satellite lost: initiation cues turned off.
-- Lightning or NWP feeds down: run on radar and satellite only, those outputs off, confidence
+- Lightning or NCMRWF model feeds down: run on radar and satellite only, those outputs off, confidence
   lowered.
 
 ## Alerts and dissemination

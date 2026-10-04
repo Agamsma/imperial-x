@@ -123,8 +123,8 @@ export default function MethodPage() {
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
             <p className="font-semibold">Preliminary evidence</p>
             <p className="mt-2 text-sm leading-relaxed text-white/70">
-              A two-day baseline on real TERLS radar and INSAT-3DR files, 10 and 11 May 2026: motion extrapolation does not beat
-              persistence.{" "}
+              A two-day baseline on real TERLS radar and INSAT-3DR files, 10 and 11 May 2026: motion helps when storms move (11 May)
+              but not on slow storms (10 May); pooled, it does not beat persistence. So the model must forecast growth and decay.{" "}
               <a href={VALIDATION_URL} className="text-accent-light underline underline-offset-4" target="_blank" rel="noopener noreferrer">
                 Code and results
               </a>
@@ -134,7 +134,7 @@ export default function MethodPage() {
             <p className="font-semibold">Planned</p>
             <p className="mt-2 text-sm leading-relaxed text-white/70">
               Archived-file ingestion and real replay, calibrated hazards, a reliability gate, LightGBM, a pysteps comparison, CAP
-              export (no agency endorsement implied), an NWP blend for 3 to 6 h, and authorised live feeds.
+              export (no agency endorsement implied), a blend with NCMRWF model guidance for 3 to 6 h, and authorised live feeds.
             </p>
           </div>
         </div>
@@ -173,6 +173,13 @@ export default function MethodPage() {
               and will be agreed with IMD before any real use. None of the hazard outputs is validated: hail is a 55 dBZ flag, strong
               wind is a proxy, lightning is a radar proxy, and cloudburst is an experimental Z-R estimate.
             </p>
+            <p className="mt-4 leading-relaxed text-white/70">
+              Planned next, not built: use the 3D TERLS volume (81 levels, 250 m apart) and the radial velocity already in our radar
+              files. Lightning: echo of 35 dBZ or more at the −10 °C level (temperature from ERA5), then IITM flash data as labels.
+              Hail: 45 dBZ echo at least 1.4 km above the freezing level (Waldvogel), plus VIL and echo-top height. Downburst:
+              low-level divergence in the radial velocity. Cloudburst: radar rain of 50 and 100 mm or more in an hour, checked against
+              rain gauges.
+            </p>
             <div className="mt-6 overflow-x-auto rounded-2xl border border-white/10">
               <table className="w-full min-w-[560px] text-left text-sm">
                 <thead className="text-white/45">
@@ -205,7 +212,8 @@ export default function MethodPage() {
               Up to 60 minutes: a sharp 2 km map. From 70 to 120 minutes: probability zones with a wider neighbourhood. From 3 to 6
               hours: a broad area outlook only, built from storm areas carried on by the average motion and from new-storm zones, then
               coarsened to about 10 km blocks. The further ahead, the less detail is promised. Planned: a skill-based reliability gate
-              for 1 to 3 h, and a blend of extrapolation with NWP guidance for storm development at 3 to 6 h.
+              for 1 to 3 h, and a blend with NCMRWF model guidance for storm development at 3 to 6 h. Storms build in minutes, so we
+              nowcast 0–3 h from fresh observations and hand over to NCMRWF model guidance for 3–6 h.
             </p>
           </section>
 
@@ -222,8 +230,10 @@ export default function MethodPage() {
             <p className="mt-4 leading-relaxed text-white/70">
               Preliminary real-data baseline (team analysis): on TERLS radar for 10 and 11 May 2026, 32 forecast pairs, CSI for echo of
               20 dBZ or more with 3 km tolerance was 0.62 for persistence and 0.61 for motion extrapolation at +15 minutes, and 0.43 and
-              0.39 at +30 minutes. Motion does not beat persistence. Two days are not enough for a general claim, and the VajraNow
-              engine itself was not run on these files.{" "}
+              0.39 at +30 minutes. By day, motion helps when storms move (11 May, 12.3 km/h: 0.664 vs 0.642 and 0.388 vs 0.366) but
+              not on slow storms (10 May, 6.3 km/h: 0.567 vs 0.596 and 0.398 vs 0.486). Pooled, motion extrapolation does not beat
+              persistence, so the model must forecast growth and decay, not just motion. Two days are not enough for a general claim,
+              and the VajraNow engine itself was not run on these files.{" "}
               <a href={VALIDATION_URL} className="text-accent-light underline underline-offset-4" target="_blank" rel="noopener noreferrer">
                 Code, inputs and results
               </a>
@@ -260,7 +270,7 @@ export default function MethodPage() {
               <li>Synthetic storms are simpler than real ones: no terrain effects on rain, no beam blockage, no attenuation.</li>
               <li>Hail, gusts and cloudburst flags use reflectivity only and are not validated. Real use needs radar volume data, Doppler velocity, local tuning and labels (hail reports, AWS gusts, rain gauges) that we still need to obtain.</li>
               <li>The small CNN has only seen synthetic storms. Ensemble probabilities are not calibrated.</li>
-              <li>On two real days, simple motion extrapolation did not beat persistence.</li>
+              <li>On two real days, simple motion extrapolation helped only on the day storms moved, and did not beat persistence overall.</li>
               <li>Next: read archived TERLS radar and INSAT-3D/3DR files in the engine, replay past Kerala storms, and score against persistence and pysteps.</li>
             </ul>
           </section>

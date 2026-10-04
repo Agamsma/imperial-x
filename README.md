@@ -13,14 +13,16 @@ Problem statement **SIH26084**: Convective scale nowcasting for Thunderstorms, H
 > **Status: idea stage.** Nothing here is a real forecast or an official IMD warning.
 >
 > - **Built:** a synthetic engine (tracking, advection, a small CNN trained on synthetic storms, a 20-member ensemble that is not calibrated), the dashboard and the API. All of it runs on **synthetic storms** made in code.
-> - **Preliminary evidence:** a two-day baseline on real TERLS radar and INSAT-3DR files (10 and 11 May 2026). **Motion extrapolation does not beat persistence.** See [Real-data baseline](#real-data-baseline-preliminary).
-> - **Planned:** real replay, calibrated hazards, a reliability gate, LightGBM hazard models, a pysteps comparison, CAP export (no agency endorsement implied), an NWP blend for 3 to 6 h, archived-file ingestion and authorised live feeds.
+> - **Preliminary evidence:** a two-day baseline on real TERLS radar and INSAT-3DR files (10 and 11 May 2026). **Motion helps when storms move (11 May, ~12 km/h) but not on slow storms (10 May, ~6 km/h). Pooled over both days, motion extrapolation does not beat persistence. So the model must forecast growth and decay, not just motion.** Two days are too few for a general claim. See [Real-data baseline](#real-data-baseline-preliminary).
+> - **Planned:** real replay, calibrated hazards, a reliability gate, LightGBM hazard models, a pysteps comparison, CAP export (no agency endorsement implied), a blend with NCMRWF model guidance for 3 to 6 h, archived-file ingestion and authorised live feeds.
 
 ## The problem
 
 - Thunderstorms, hail and cloudbursts can build in minutes, over an area only a few kilometres across.
-- Current nowcasts are issued at district level and stay valid for 3 hours. Officials cannot tell which town is hit first, or when.
-- Lightning killed 2,558 people in India in 2023 (source: NCRB, Accidental Deaths and Suicides in India 2023).
+- Current IMD nowcasts are issued per district and station, with a validity time. Officials cannot tell which town is hit first, or when.
+- Lightning killed 2,560 people in India in 2023, 39.7% of all deaths from forces of nature (source: NCRB, Accidental Deaths and Suicides in India 2023).
+
+Storms build in minutes, so we nowcast 0–3 h from fresh observations and hand over to NCMRWF model guidance for 3–6 h.
 
 Officials need four answers, fast: **Which hazard? Where, and how precisely? How sure are we? How many minutes do we have?**
 
@@ -68,16 +70,19 @@ Planned, not built: a stale-radar flag with no new alerts when radar is lost; sa
 
 A first check on real data, separate from the engine: TERLS radar and INSAT-3DR files from MOSDAC, 10 and 11 May 2026. Team analysis.
 
-| Lead (nominal) | Pairs | Persistence CSI | Motion extrapolation CSI |
-| --- | --- | --- | --- |
-| +15 min | 32 (18 + 14) | 0.62 | 0.61 |
-| +30 min | 32 (18 + 14) | 0.43 | 0.39 |
+**Motion helps when storms move (11 May, ~12 km/h) but not on slow storms (10 May, ~6 km/h). Pooled over both days, motion extrapolation does not beat persistence. So the model must forecast growth and decay, not just motion.**
 
-CSI = hits / (hits + misses + false alarms), echo of 20 dBZ or more, 3 km tolerance, Farneback optical flow for the motion. **Motion extrapolation does not beat persistence.** Two days are too few for a general claim, and the VajraNow engine has not been run on these files yet.
+| Day | Median cell motion | Pairs | +15 min: persistence vs motion | +30 min: persistence vs motion | Better |
+| --- | --- | --- | --- | --- | --- |
+| 10 May | 6.3 km/h | 18 | 0.596 vs 0.567 | 0.486 vs 0.398 | Persistence |
+| 11 May | 12.3 km/h | 14 | 0.642 vs 0.664 | 0.366 vs 0.388 | Motion |
+| Both days, pooled | | 32 | 0.62 vs 0.61 | 0.43 vs 0.39 | Persistence (by 0.01 at +15 min) |
+
+CSI = hits / (hits + misses + false alarms), echo of 20 dBZ or more, 3 km tolerance, Farneback optical flow for the motion. Two days are too few for a general claim, and the VajraNow engine has not been run on these files yet.
 
 Scripts, the list of input files, results and how to rerun it: [validation/real_radar/](validation/real_radar/).
 
-![Skill vs lead time](public/real-data/skill-only.png)
+![Skill by day: motion helps only when storms move](public/real-data/skill-by-day.png)
 
 ### Demo scenarios (all synthetic)
 
@@ -144,15 +149,15 @@ Vercel builds the Next.js site and the Python function from the same repo:
 
 ## Hazards
 
-None of these is validated. Each is labelled with what it is today.
+None of these is validated. Each is labelled with what it is today. The **next** column is planned, not built: it uses the 3D TERLS volume (81 levels, 250 m apart) and the radial velocity (`VEL`) field that are already in our radar files.
 
-| Hazard | In the demo today | Status |
-| --- | --- | --- |
-| Lightning | Chance of echo of 40 dBZ or more (radar proxy); IITM flash data planned | Proxy |
-| New storms forming | Satellite cloud-top cooling where radar sees little yet | Demo |
-| Hail | Flag where echo reaches 55 dBZ; kept out of the alert levels | Flag |
-| Downburst / damaging gusts | Strong-wind proxy: a cell of 50 dBZ or more moving 30 km/h or faster; kept out of the alert levels | Proxy |
-| Extreme rain / cloudburst | Chance of 100 mm in an hour, estimated from reflectivity with Z = 300 R^1.4 | Experimental |
+| Hazard | In the demo today | Next (planned, not built) | Status |
+| --- | --- | --- | --- |
+| Lightning | Chance of echo of 40 dBZ or more (radar proxy) | Echo of 35 dBZ or more at the −10 °C level (temperature from ERA5), then IITM flash data as labels | Proxy |
+| New storms forming | Satellite cloud-top cooling where radar sees little yet | Checked against later radar echoes | Demo |
+| Hail | Flag where echo reaches 55 dBZ; kept out of the alert levels | 45 dBZ echo at least 1.4 km above the freezing level (Waldvogel criterion), plus VIL and echo-top height | Flag |
+| Downburst / damaging gusts | Strong-wind proxy: a cell of 50 dBZ or more moving 30 km/h or faster; kept out of the alert levels | Low-level radial-velocity divergence from `VEL` (in our files, not yet processed) | Proxy |
+| Extreme rain / cloudburst | Radar rain of 50 mm and 100 mm or more in an hour, estimated with Z = 300 R^1.4 (100 mm/h is the cloudburst threshold as widely reported) | Rain-gauge check | Experimental |
 
 How each will be built and checked (planned predictors, labels and verification): [docs/requirements-coverage.md](docs/requirements-coverage.md).
 
@@ -160,11 +165,12 @@ How each will be built and checked (planned predictors, labels and verification)
 
 | Source | What it gives | Access |
 | --- | --- | --- |
-| TERLS radar | Reflectivity (velocity not yet processed); scans about 15 min apart in our files | MOSDAC, ordered |
-| INSAT-3D/3DR | Cloud-top imagery, 30 min frames in our order (INSAT-3DR verified in our data) | MOSDAC account, ordered |
+| TERLS radar | 3D reflectivity + velocity, ~15 min scans. Reflectivity used so far; velocity not yet processed | MOSDAC: 2 days (10–11 May 2026) in hand, more ordered |
+| INSAT-3DR | Infrared cloud tops, 30 min frames | MOSDAC: in hand, more ordered |
+| Cherrapunji radar | MOSDAC files we hold for 10 and 12 May 2026 | Planned second region for cloudburst work; not used yet |
 | ISS-LIS | Lightning flashes, spot checks only | NASA Earthdata, free |
-| IITM lightning | Strike locations, 80+ sensors | Planned request |
-| ERA5 / NCMRWF | Weather context (ERA5 retrospective only) | ERA5 open; NCMRWF planned |
+| IITM lightning | Strike locations, 80+ sensors | To request |
+| ERA5 / NCMRWF | Instability, freezing level, wind. ERA5 for past cases; NCMRWF model forecasts for 3–6 h | ERA5 open; NCMRWF to request |
 | Live IMD radar | Live runs | Needs IMD approval |
 
 How to get each one: [docs/data-sources.md](docs/data-sources.md).
@@ -177,7 +183,7 @@ How to get each one: [docs/data-sources.md](docs/data-sources.md).
 | Engine | Python, numpy (tracking, extrapolation, ensemble, contours), FastAPI |
 | Small CNN | PyTorch for training, numpy for running |
 | Real-data baseline | numpy, OpenCV, netCDF4, h5py, matplotlib |
-| Planned | pysteps comparison, LightGBM hazard models with calibration, PostGIS, archived MOSDAC file ingestion, CAP export, NWP blend for 3 to 6 h |
+| Planned | pysteps comparison, LightGBM hazard models with calibration, PostGIS, archived MOSDAC file ingestion, CAP export, NCMRWF model blend for 3 to 6 h |
 | Frontend | Next.js, MapLibre GL JS, Tailwind CSS, Framer Motion |
 | Hosting | Vercel (site and Python function) |
 
@@ -185,7 +191,7 @@ How to get each one: [docs/data-sources.md](docs/data-sources.md).
 
 1. **Now:** synthetic engine, dashboard and API; a two-day real-data baseline.
 2. **Real replay:** archived-file ingestion for TERLS radar and INSAT-3D/3DR; replay past Kerala storms; compare with persistence and pysteps.
-3. **Calibrated hazards:** LightGBM hazard models with calibrated probabilities, a daily scorecard and a skill-based reliability gate; an NWP blend for 3 to 6 h.
+3. **Calibrated hazards:** LightGBM hazard models with calibrated probabilities, a daily scorecard and a skill-based reliability gate; a blend with NCMRWF model guidance for 3 to 6 h.
 4. **CAP export and live feeds:** CAP export for authorised official dissemination (no agency endorsement implied); live runs only after IMD and IITM approval.
 
 ## Intended benefits

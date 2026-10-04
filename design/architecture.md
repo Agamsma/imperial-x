@@ -1,6 +1,6 @@
 # VajraNow architecture
 
-**Status: the engine runs on synthetic storms.** Archived-file ingestion, training on real storms and authorised live feeds are still planned. A separate two-day baseline on real TERLS radar found that motion extrapolation does not beat persistence ([validation/real_radar](../validation/real_radar/)). No hazard skill numbers exist yet.
+**Status: the engine runs on synthetic storms.** Archived-file ingestion, training on real storms and authorised live feeds are still planned. A separate two-day baseline on real TERLS radar found that motion helps when storms move (11 May) but not on slow storms (10 May); pooled, motion extrapolation does not beat persistence, so the model must forecast growth and decay ([validation/real_radar](../validation/real_radar/)). No hazard skill numbers exist yet.
 
 Code map: each stage below is a module in [`vajranow/`](../vajranow/README.md). The API is [`vajranow/service.py`](../vajranow/service.py), served by [`api/index.py`](../api/index.py).
 
@@ -37,7 +37,7 @@ flowchart LR
 - **Lead times:**
   - 0 to 1 h: sharp 2 km hazard map.
   - 1 to 3 h: probability zones (coarser, with chance of each hazard).
-  - 3 to 6 h: broad area outlook only. Planned: blend extrapolation with NWP guidance.
+  - 3 to 6 h: broad area outlook only. Planned: blend with NCMRWF model guidance (0–3 h nowcast from fresh observations, hand-over to NCMRWF for 3–6 h).
 
 The further ahead, the less detail we show. This is on purpose: skill drops quickly with lead time for small storms.
 
