@@ -51,7 +51,7 @@ function FlagIcon() {
 // Each dock item lights up while any of its sections is on screen.
 const ITEMS = [
   { key: "home", href: "#top", label: "Home", sections: ["top", "problem"], Icon: HomeIcon },
-  { key: "how", href: "#how", label: "How it works", sections: ["how", "engine"], Icon: FlowIcon },
+  { key: "how", href: "#how", label: "How it works", sections: ["how", "engine", "real-data"], Icon: FlowIcon },
   { key: "hazards", href: "#hazards", label: "Hazards", sections: ["hazards"], Icon: BoltIcon },
   { key: "data", href: "#data", label: "Data", sections: ["data"], Icon: DataIcon },
   { key: "roadmap", href: "#roadmap", label: "Roadmap and team", sections: ["roadmap", "team", "cta"], Icon: FlagIcon },

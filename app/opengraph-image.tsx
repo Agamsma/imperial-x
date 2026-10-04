@@ -52,7 +52,7 @@ export default function Image() {
             <div style={{ display: "flex", fontSize: 124, fontWeight: 700, letterSpacing: 4 }}>NOW</div>
           </div>
           <div style={{ display: "flex", marginTop: 26, fontSize: 30, fontStyle: "italic", color: "rgba(255,255,255,0.85)", lineHeight: 1.35 }}>
-            Which storm hazard is coming, exactly where, how sure we are, and how many minutes officials have.
+            Which storm hazard is coming, where and how precisely, how sure we are, and how many minutes officials have.
           </div>
           <div style={{ display: "flex", marginTop: 32, fontSize: 20, letterSpacing: 3, color: "#8db9e3", fontFamily: "sans-serif" }}>
             SIH 2026 · SIH26084 · IDEA STAGE

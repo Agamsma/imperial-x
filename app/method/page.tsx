@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "../_components/SiteFooter";
-import { GITHUB_URL } from "@/lib/site";
+import { GITHUB_URL, VALIDATION_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Method | VajraNow",
@@ -11,10 +11,10 @@ export const metadata: Metadata = {
 const STEPS = [
   {
     id: "grid",
-    title: "1. One grid, every 10 minutes",
+    title: "1. One 2 km grid",
     body: [
-      "Everything lives on one grid of 2 km cells (189 by 209 cells) over south Kerala, covering the TERLS Doppler radar's 250 km range. The cells are square in Web Mercator, so the engine's maps drop straight onto the web map with no warping.",
-      "The engine looks at the last 60 minutes of radar scans, the two latest infrared satellite images, and lightning from the last 10 minutes.",
+      "Everything lives on one grid of 2 km cells (189 by 209 cells) over south Kerala, covering the TERLS Doppler radar's 250 km range. The cells are square in Web Mercator, so the engine's maps drop straight onto the web map with no warping. Real detail is coarser than 2 km: satellite pixels are about 4 km and the radar beam widens with range.",
+      "The demo engine steps in 10-minute intervals on synthetic scans. It looks at the last 60 minutes of radar scans, the two latest infrared satellite images, and lightning from the last 10 minutes. Real TERLS scans in our files are about 15 minutes apart, so the planned real system makes a new run with each scan.",
     ],
   },
   {
@@ -23,7 +23,8 @@ const STEPS = [
     body: [
       "Ground clutter: pixels that stay strong in at least 80% of scans, barely change (under 2.5 dB), and stand at least 15 dB above their surroundings are removed. Real storms move and vary; clutter does not.",
       "Speckle: single strong pixels with almost no echo around them are removed.",
-      "Missing scans are reported, not hidden, and tracking uses the scans that remain. Satellite delay is shown on the dashboard.",
+      "Missing data, as the code handles it today: if an earlier radar scan is missing, it is reported and tracking uses the scans that remain. If the latest radar scan is missing, the engine does not run a nowcast at all. A satellite image more than 20 minutes old is marked stale on the dashboard, but its cloud-top cues are still used.",
+      "Planned, not built: a stale-radar flag with no new alerts when radar is lost, turning satellite initiation cues off when satellite is lost, and running on radar and satellite only (with those outputs off and confidence lowered) when lightning or weather-model feeds are down.",
     ],
   },
   {
@@ -44,11 +45,11 @@ const STEPS = [
   },
   {
     id: "fusion",
-    title: "5. Fusion step (growth and new storms)",
+    title: "5. Small CNN (growth and new storms)",
     body: [
       "A small neural network (4 dilated convolution layers, about 17 thousand weights, on a 4 km version of the grid) predicts how reflectivity will change over the next 30 and 60 minutes, moving with the storm. Its inputs: radar now, infrared cloud top temperature, cloud top cooling rate, recent lightning, and the radar trend over the last 10 minutes.",
       "Fast-cooling cloud tops often show a growing storm before radar sees much rain. That lets the engine flag new storms (experimental).",
-      "It was trained with PyTorch on 600 sets of synthetic storms and exported to numpy, so the live API needs no deep learning library. It stands in for the planned AI fusion model: it shows the pipeline works, and says nothing yet about real storms.",
+      "It was trained with PyTorch on 600 sets of synthetic storms and exported to numpy, so the API needs no deep learning library. It shows the pipeline works, and says nothing yet about real storms. The planned hazard models are LightGBM with calibration.",
     ],
   },
   {
@@ -57,6 +58,7 @@ const STEPS = [
     body: [
       "The engine runs 20 slightly different forecasts plus a control run. Each one gets a different storm speed, a small shift in motion (larger where tracking confidence is low), a different amount of growth or decay, and intensity noise that moves with the storm and grows with lead time.",
       "The probability of a hazard at a place is the share of runs that show it within about 3 km (up to 60 minutes ahead) or about 5 km (70 to 120 minutes ahead).",
+      "These probabilities are not calibrated. Calibration against observed storms is planned.",
     ],
   },
   {
@@ -71,12 +73,13 @@ const STEPS = [
 
 const THRESHOLDS = [
   ["35 dBZ", "Thunderstorm echo", "Yellow if the chance is 30% or more"],
-  ["40 dBZ", "Lightning likely", "Shown as a hazard when the chance is 50% or more"],
+  ["40 dBZ", "Lightning (radar proxy, not lightning data)", "Shown as a hazard when the chance is 50% or more"],
   ["45 dBZ", "Heavy thunderstorm core", "Orange if the chance is 40% or more"],
   ["50 dBZ", "Severe core", "Red if the chance is 50% or more"],
-  ["55 dBZ", "Hail signal (experimental)", "Shown when the chance is 30% or more"],
-  ["50 mm in the next hour", "Very heavy rain burst (experimental)", "Orange if the chance is 40% or more"],
-  ["100 mm in the next hour", "Cloudburst threshold (experimental)", "Red if the chance is 40% or more"],
+  ["55 dBZ", "Hail flag (not validated)", "Shown when the chance is 30% or more; kept out of the levels"],
+  ["50 dBZ cell moving 30 km/h or faster", "Strong-wind proxy (downburst speed not measured)", "Flag only; kept out of the levels"],
+  ["50 mm in the next hour", "Very heavy rain burst (experimental Z-R estimate)", "Orange if the chance is 40% or more"],
+  ["100 mm in the next hour", "Cloudburst (experimental Z-R estimate)", "Red if the chance is 40% or more"],
 ];
 
 export default function MethodPage() {
@@ -105,23 +108,33 @@ export default function MethodPage() {
         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-accent-light">Method</p>
         <h1 className="mt-4 font-serif text-4xl leading-tight sm:text-5xl">How the VajraNow engine works</h1>
         <p className="mt-5 text-lg leading-relaxed text-white/65">
-          The engine already runs end to end, on synthetic storms. This page explains each step, the numbers it uses, and what is
+          The engine runs on synthetic storms. This page explains each step, the numbers it uses, and what is
           still missing before it can be trusted with real data.
         </p>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2">
+        <div className="mt-10 grid gap-4 md:grid-cols-3">
           <div className="rounded-2xl border border-accent-light/30 bg-accent-light/[0.06] p-6">
-            <p className="font-semibold text-accent-light">Runs today</p>
+            <p className="font-semibold text-accent-light">Built</p>
             <p className="mt-2 text-sm leading-relaxed text-white/70">
-              Every step below, on synthetic radar, satellite and lightning data made in code, behind a public API. Automated tests
-              check each step on every change.
+              The synthetic engine (tracking, advection, a small CNN trained on synthetic storms, a 20-member ensemble that is not
+              calibrated), the dashboard and the API. Automated tests check each step on every change.
             </p>
           </div>
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
-            <p className="font-semibold">Not built yet</p>
+            <p className="font-semibold">Preliminary evidence</p>
             <p className="mt-2 text-sm leading-relaxed text-white/70">
-              Reading real MOSDAC radar and satellite files, a fusion model trained on real storms, verification on past Indian storm
-              cases, and any live operation (only with IMD).
+              A two-day baseline on real TERLS radar and INSAT-3DR files, 10 and 11 May 2026: motion extrapolation does not beat
+              persistence.{" "}
+              <a href={VALIDATION_URL} className="text-accent-light underline underline-offset-4" target="_blank" rel="noopener noreferrer">
+                Code and results
+              </a>
+            </p>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+            <p className="font-semibold">Planned</p>
+            <p className="mt-2 text-sm leading-relaxed text-white/70">
+              Archived-file ingestion and real replay, calibrated hazards, a reliability gate, LightGBM, a pysteps comparison, CAP
+              export (no agency endorsement implied), an NWP blend for 3 to 6 h, and authorised live feeds.
             </p>
           </div>
         </div>
@@ -155,8 +168,10 @@ export default function MethodPage() {
           <section id="thresholds" className="scroll-mt-20">
             <h2 className="font-serif text-2xl sm:text-3xl">8. Hazards and IMD colours</h2>
             <p className="mt-4 leading-relaxed text-white/70">
-              Colours follow the IMD scheme: Green (no warning), Yellow (be updated), Orange (be prepared), Red (take action). The
-              thresholds below are illustrative starting points from the radar literature and will be agreed with IMD before any real use.
+              Colours follow the meaning of the IMD scheme: Green (no warning), Yellow (be updated), Orange (be prepared), Red (take
+              action). Official warnings stay with IMD. The thresholds below are illustrative starting points from the radar literature
+              and will be agreed with IMD before any real use. None of the hazard outputs is validated: hail is a 55 dBZ flag, strong
+              wind is a proxy, lightning is a radar proxy, and cloudburst is an experimental Z-R estimate.
             </p>
             <div className="mt-6 overflow-x-auto rounded-2xl border border-white/10">
               <table className="w-full min-w-[560px] text-left text-sm">
@@ -189,7 +204,8 @@ export default function MethodPage() {
             <p className="mt-4 leading-relaxed text-white/70">
               Up to 60 minutes: a sharp 2 km map. From 70 to 120 minutes: probability zones with a wider neighbourhood. From 3 to 6
               hours: a broad area outlook only, built from storm areas carried on by the average motion and from new-storm zones, then
-              coarsened to about 10 km blocks. The further ahead, the less detail is promised.
+              coarsened to about 10 km blocks. The further ahead, the less detail is promised. Planned: a skill-based reliability gate
+              for 1 to 3 h, and a blend of extrapolation with NWP guidance for storm development at 3 to 6 h.
             </p>
           </section>
 
@@ -201,8 +217,22 @@ export default function MethodPage() {
             </p>
             <p className="mt-4 leading-relaxed text-white/70">
               Today these comparisons run on held-out synthetic storms inside the automated tests, so a change that makes things worse
-              than the baseline fails the build. Scores on synthetic storms say nothing about real skill, so none are published. Real
-              scores will come from past storm cases once MOSDAC data is in.
+              than the baseline fails the build. Scores on synthetic storms say nothing about real skill, so none are published.
+            </p>
+            <p className="mt-4 leading-relaxed text-white/70">
+              Preliminary real-data baseline (team analysis): on TERLS radar for 10 and 11 May 2026, 32 forecast pairs, CSI for echo of
+              20 dBZ or more with 3 km tolerance was 0.62 for persistence and 0.61 for motion extrapolation at +15 minutes, and 0.43 and
+              0.39 at +30 minutes. Motion does not beat persistence. Two days are not enough for a general claim, and the VajraNow
+              engine itself was not run on these files.{" "}
+              <a href={VALIDATION_URL} className="text-accent-light underline underline-offset-4" target="_blank" rel="noopener noreferrer">
+                Code, inputs and results
+              </a>
+              .
+            </p>
+            <p className="mt-4 leading-relaxed text-white/70">
+              Planned test plan: split by whole days (adjacent days grouped), 60% train, 20% validate, 20% test; test days used once.
+              Targets are fixed in advance: beat persistence and pysteps, calibrated probabilities, and arrival error within 10 minutes
+              up to 30 minutes lead. Missing data is never scored as a negative.
             </p>
           </section>
 
@@ -228,9 +258,10 @@ export default function MethodPage() {
             <h2 className="font-serif text-2xl sm:text-3xl">12. Limits and next steps</h2>
             <ul className="mt-4 list-disc space-y-2 pl-5 leading-relaxed text-white/70">
               <li>Synthetic storms are simpler than real ones: no terrain effects on rain, no beam blockage, no attenuation.</li>
-              <li>Hail, gusts and cloudburst flags use reflectivity only. Real use needs radar volume data, dual-polarisation fields and local tuning.</li>
-              <li>The fusion network has only seen synthetic storms. It must be retrained and checked on real MOSDAC cases.</li>
-              <li>Next: read archived TERLS radar and INSAT-3D/3DR files, replay past Kerala storms, and score against the baseline.</li>
+              <li>Hail, gusts and cloudburst flags use reflectivity only and are not validated. Real use needs radar volume data, Doppler velocity, local tuning and labels (hail reports, AWS gusts, rain gauges) that we still need to obtain.</li>
+              <li>The small CNN has only seen synthetic storms. Ensemble probabilities are not calibrated.</li>
+              <li>On two real days, simple motion extrapolation did not beat persistence.</li>
+              <li>Next: read archived TERLS radar and INSAT-3D/3DR files in the engine, replay past Kerala storms, and score against persistence and pysteps.</li>
             </ul>
           </section>
         </div>

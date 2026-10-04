@@ -9,12 +9,12 @@ import MotionProvider from "./_components/MotionProvider";
 import Reveal from "./_components/Reveal";
 import SiteFooter from "./_components/SiteFooter";
 import TiltCard from "./_components/TiltCard";
-import { GITHUB_URL, TEAM } from "@/lib/site";
+import { GITHUB_URL, TEAM, VALIDATION_URL } from "@/lib/site";
 
 const TIERS = [
-  { range: "0 to 1 h", title: "Sharp 2 km map", body: "Where the storm will be, cell by cell", grow: 1, shade: "bg-accent border-accent" },
-  { range: "1 to 3 h", title: "Probability zones", body: "Areas with a chance of each hazard", grow: 2, shade: "bg-[#2a5f91]/70 border-[#3b76ad]/60" },
-  { range: "3 to 6 h", title: "Area outlook", body: "Broad regions to watch", grow: 3, shade: "bg-accent-light/[0.08] border-accent-light/25" },
+  { range: "0 to 1 h", title: "Main target", body: "2 km probability map from tracked storms", grow: 1, shade: "bg-accent border-accent" },
+  { range: "1 to 3 h", title: "Wider probability zones", body: "Coarser zones; a skill-based reliability gate is proposed", grow: 2, shade: "bg-[#2a5f91]/70 border-[#3b76ad]/60" },
+  { range: "3 to 6 h", title: "Area outlook", body: "Broad regions only. Planned: blend extrapolation with NWP guidance", grow: 3, shade: "bg-accent-light/[0.08] border-accent-light/25" },
 ];
 
 const ICON = { stroke: "currentColor", strokeWidth: 1.6, strokeLinecap: "round", strokeLinejoin: "round", fill: "none" } as const;
@@ -22,14 +22,14 @@ const ICON = { stroke: "currentColor", strokeWidth: 1.6, strokeLinecap: "round",
 const HAZARDS = [
   {
     name: "Lightning",
-    body: "Where strikes are likely in the next hour.",
-    experimental: false,
+    body: "Chance of lightning from a radar proxy (echo of 40 dBZ or more). IITM flash data is planned.",
+    tag: "Radar proxy",
     icon: <path {...ICON} d="M13.5 3 6 13.2h5.2L10 21l7.5-10.2h-5.2z" />,
   },
   {
     name: "New storms forming",
-    body: "Early signs of new cells from satellite cloud tops.",
-    experimental: false,
+    body: "Early signs of new cells from fast-cooling satellite cloud tops.",
+    tag: "Demo",
     icon: (
       <>
         <path {...ICON} d="M7 17a4 4 0 0 1-.6-8 5.5 5.5 0 0 1 10.6 1.5A3.3 3.3 0 0 1 17 17z" />
@@ -39,8 +39,8 @@ const HAZARDS = [
   },
   {
     name: "Hail",
-    body: "Cells with a strong hail signal on radar.",
-    experimental: true,
+    body: "A flag where radar echo reaches 55 dBZ. Kept out of the alert levels.",
+    tag: "Flag only",
     icon: (
       <>
         <path {...ICON} d="M7 14a4 4 0 0 1-.6-8 5.5 5.5 0 0 1 10.6 1.5A3.3 3.3 0 0 1 17 14z" />
@@ -52,8 +52,8 @@ const HAZARDS = [
   },
   {
     name: "Extreme rain / cloudburst",
-    body: "Rain rates crossing a cloudburst threshold.",
-    experimental: true,
+    body: "Chance of 100 mm in an hour, estimated from reflectivity with a Z-R relation.",
+    tag: "Experimental",
     icon: (
       <>
         <path {...ICON} d="M7 13a4 4 0 0 1-.6-8 5.5 5.5 0 0 1 10.6 1.5A3.3 3.3 0 0 1 17 13z" />
@@ -63,25 +63,25 @@ const HAZARDS = [
   },
   {
     name: "Damaging gusts",
-    body: "Strong outflow winds ahead of storm cells.",
-    experimental: true,
+    body: "A strong-wind proxy: fast-moving cells with a severe core. Downburst speed is not measured yet.",
+    tag: "Proxy",
     icon: <path {...ICON} d="M3 9h11a3 3 0 1 0-3-3M3 13h15a3 3 0 1 1-3 3M3 17h7" />,
   },
 ];
 
-type Status = "approved" | "open" | "planned" | "future";
+type Status = "ordered" | "open" | "planned" | "future";
 
 const SOURCES: { name: string; what: string; use: string; status: Status; label: string }[] = [
-  { name: "MOSDAC TERLS Doppler radar", what: "Radar reflectivity and winds, Thiruvananthapuram", use: "Storm cells and motion", status: "approved", label: "Access approved" },
-  { name: "MOSDAC INSAT-3D/3DR", what: "Infrared cloud top imagery", use: "Storm growth and new cells", status: "approved", label: "Access approved" },
-  { name: "ERA5 (Copernicus)", what: "Hourly atmospheric reanalysis", use: "Instability and wind context", status: "open", label: "Open" },
-  { name: "SEVIR benchmark", what: "Public storm event dataset (radar, satellite, lightning)", use: "Model pre-training and testing", status: "open", label: "Open" },
-  { name: "IITM lightning network", what: "Ground lightning strike data", use: "Lightning labels and checks", status: "planned", label: "Planned request" },
-  { name: "Live IMD radar", what: "Real-time national radar network", use: "Live operation", status: "future", label: "Future, needs approval" },
+  { name: "TERLS Doppler radar (MOSDAC)", what: "Reflectivity used, velocity not yet processed. Scans about 15 min apart in our files", use: "Storm cells and motion", status: "ordered", label: "Ordered" },
+  { name: "INSAT-3D/3DR (MOSDAC)", what: "Infrared cloud-top imagery, 30 min frames in our order", use: "Storm growth and new cells", status: "ordered", label: "Ordered" },
+  { name: "ISS-LIS (NASA Earthdata)", what: "Lightning flashes seen from space, spot passes only", use: "Spot checks of the lightning proxy", status: "open", label: "Free" },
+  { name: "IITM lightning network", what: "Ground strike locations, 80+ sensors", use: "Lightning labels and checks", status: "planned", label: "Planned request" },
+  { name: "ERA5 / NCMRWF", what: "Weather context. ERA5 is retrospective only", use: "Instability and wind context", status: "open", label: "ERA5 open, NCMRWF planned" },
+  { name: "Authorised live feeds", what: "Live IMD radar for real-time runs", use: "Live operation", status: "future", label: "Needs IMD approval" },
 ];
 
 const STATUS_STYLE: Record<Status, string> = {
-  approved: "bg-accent text-white",
+  ordered: "bg-accent text-white",
   open: "bg-accent-light/15 text-accent-light",
   planned: "border border-accent-light/40 text-accent-light",
   future: "border border-white/15 text-white/55",
@@ -90,17 +90,38 @@ const STATUS_STYLE: Record<Status, string> = {
 const ENGINE_PARTS = [
   { title: "Quality checks", stat: "Clutter, speckle, gaps", body: "Removes ground clutter and speckle, and reports missing radar scans instead of hiding them." },
   { title: "TREC tracking", stat: "30 km blocks", body: "Matches blocks of radar echo between scans to measure storm motion, with a confidence value for every cell." },
-  { title: "Extrapolation", stat: "2 km, every 10 min", body: "Moves storms along the motion (semi-Lagrangian advection): the baseline every other step must beat." },
-  { title: "Fusion network", stat: "17k weights", body: "Predicts growth, decay and new storms from radar, cloud top cooling and lightning. Trained on synthetic storms only." },
-  { title: "Ensemble", stat: "20 members", body: "Twenty slightly different futures turn into probabilities, so every warning says how sure it is." },
-  { title: "Warning logic", stat: "IMD colours", body: "Arrival windows as a range, hail, gust and cloudburst flags, and honest 'not reliable' labels." },
+  { title: "Extrapolation", stat: "2 km grid", body: "Moves storms along the motion (semi-Lagrangian advection): the baseline every other step must beat." },
+  { title: "Small CNN", stat: "17k weights", body: "Predicts growth, decay and new storms from radar, cloud top cooling and lightning. Trained on synthetic storms only." },
+  { title: "Ensemble", stat: "20 members", body: "Twenty slightly different futures turn into probabilities. They are not calibrated yet." },
+  { title: "Warning logic", stat: "IMD colours", body: "Arrival windows as a range, unvalidated hail, wind and cloudburst flags, and 'not reliable' labels." },
 ];
 
 const ROADMAP = [
-  { title: "Idea", body: "Problem study, design, and a working engine running on synthetic storms (this site).", current: true },
-  { title: "Replay prototype", body: "Run the pipeline on past storm cases from archived radar and satellite data.", current: false },
-  { title: "Fusion model", body: "Train the AI fusion model and check it against the pysteps baseline.", current: false },
-  { title: "Live feeds with IMD", body: "Connect live feeds, only with IMD approval and partnership.", current: false },
+  { title: "Synthetic engine", body: "Engine, dashboard and API on synthetic storms, plus a two-day real-data baseline (this site).", current: true },
+  { title: "Real replay", body: "Read archived TERLS and INSAT files, replay past Kerala storms, compare with persistence and pysteps.", current: false },
+  { title: "Calibrated hazards", body: "LightGBM hazard models, calibrated probabilities, a daily scorecard and a skill-based reliability gate.", current: false },
+  { title: "CAP export, live feeds", body: "CAP export for authorised official channels. Live runs only after IMD and IITM approval.", current: false },
+];
+
+const STATUS_ROWS = [
+  {
+    title: "Built",
+    items: ["Synthetic engine: tracking, advection, small CNN on synthetic storms, 20-member ensemble (uncalibrated)", "Dashboard", "API"],
+  },
+  {
+    title: "Preliminary evidence",
+    items: ["Two-day real-data baseline: TERLS radar and INSAT-3DR, 10 and 11 May 2026", "Motion extrapolation does not beat persistence"],
+  },
+  {
+    title: "Planned",
+    items: [
+      "Real replay, calibrated hazards, reliability gate",
+      "LightGBM hazard models, pysteps comparison",
+      "CAP export (no agency endorsement implied)",
+      "NWP blend for 3 to 6 h",
+      "Archived-file ingestion, then authorised live feeds",
+    ],
+  },
 ];
 
 function Glow({ side }: { side: "left" | "right" }) {
@@ -199,7 +220,7 @@ export default function Home() {
             glow="right"
             eyebrow="How it works (planned)"
             title="From raw radar to a clear decision"
-            intro="Every 10 minutes, VajraNow will put radar, satellite and lightning data on one 2 km grid, forecast where storms move and grow, and turn that into IMD colour warnings with arrival times."
+            intro="With each new radar scan (about every 15 minutes), VajraNow will put radar, satellite, lightning and weather-model data on one 2 km output grid, forecast where storms move and grow, and turn that into IMD colour levels with arrival ranges. Real detail is coarser than 2 km: satellite pixels are about 4 km and the radar beam widens with range."
           >
             <Reveal>
               <div className="rounded-3xl border border-white/10 bg-white/[0.025] p-4 shadow-[0_30px_80px_rgba(0,0,0,0.35)] backdrop-blur-sm sm:p-8">
@@ -238,8 +259,8 @@ export default function Home() {
           <Section
             id="engine"
             eyebrow="Under the hood"
-            title="The engine already runs"
-            intro="Every step of the flow above is working code behind an open API. Until MOSDAC data is wired in, it runs on synthetic radar, satellite and lightning data made in code."
+            title="The engine runs on synthetic storms"
+            intro="Align, predict, decide and show are working code behind an open API. They run on synthetic radar, satellite and lightning data made in code. Reading real archived files is planned."
           >
             <Reveal className="-mt-4 mb-10">
               <EngineStatus />
@@ -292,9 +313,9 @@ export default function Home() {
     "confidence": "medium"
   },
   "hazards": [
-    "Lightning likely",
-    "Hail signal (experimental)",
-    "Damaging gusts possible (experimental)"
+    "Lightning likely (radar proxy)",
+    "Hail flag (55 dBZ, not validated)",
+    "Strong winds possible (proxy, not validated)"
   ],
   "rain_next_hour_mm": { "median": 40, "p90": 49 }
 }`}
@@ -304,12 +325,90 @@ export default function Home() {
             </Reveal>
           </Section>
 
+          {/* Real data */}
+          <Section
+            id="real-data"
+            glow="right"
+            eyebrow="Preliminary evidence"
+            title="A first look at real radar"
+            intro="A two-day baseline on real TERLS radar and INSAT-3DR files from MOSDAC, 10 and 11 May 2026. Moving radar echoes along their measured motion did not beat keeping them where they are. We report that as it is."
+          >
+            <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr] lg:items-center">
+              <Reveal>
+                <figure className="overflow-hidden rounded-2xl border border-white/10 bg-white p-3">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- static chart, shown at its own size */}
+                  <img
+                    src="/real-data/skill-only.png"
+                    alt="Bar chart of CSI by lead time. At +15 minutes persistence scores 0.62 and motion extrapolation 0.61. At +30 minutes persistence scores 0.43 and motion extrapolation 0.39. 32 forecast pairs, 10 and 11 May 2026."
+                    width={1688}
+                    height={1019}
+                    loading="lazy"
+                    className="h-auto w-full"
+                  />
+                </figure>
+              </Reveal>
+              <Reveal delay={0.1}>
+                <div className="overflow-x-auto rounded-2xl border border-white/10 bg-white/[0.025]">
+                  <table className="w-full text-left text-sm">
+                    <thead className="text-white/45">
+                      <tr>
+                        <th className="px-4 py-3 font-semibold">Lead</th>
+                        <th className="px-4 py-3 font-semibold">Persistence</th>
+                        <th className="px-4 py-3 font-semibold">Motion</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-t border-white/[0.07]">
+                        <td className="px-4 py-3 font-medium">+15 min</td>
+                        <td className="px-4 py-3 text-white/70">0.62</td>
+                        <td className="px-4 py-3 text-white/70">0.61</td>
+                      </tr>
+                      <tr className="border-t border-white/[0.07]">
+                        <td className="px-4 py-3 font-medium">+30 min</td>
+                        <td className="px-4 py-3 text-white/70">0.43</td>
+                        <td className="px-4 py-3 text-white/70">0.39</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p className="mt-4 text-sm leading-relaxed text-white/55">
+                  CSI = hits / (hits + misses + false alarms), echo of 20 dBZ or more, 3 km tolerance. 32 forecast pairs (18 on 10 May, 14
+                  on 11 May). Team analysis of two days, so it says little about skill in general. The VajraNow engine has not been run on
+                  these files.
+                </p>
+                <a
+                  href={VALIDATION_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-5 inline-block rounded-full border border-white/25 px-4 py-2 text-sm text-white/85 transition-colors hover:border-white hover:text-white"
+                >
+                  Code, inputs and results on GitHub
+                </a>
+              </Reveal>
+            </div>
+
+            <div className="mt-16 grid gap-5 md:grid-cols-3">
+              {STATUS_ROWS.map((r, i) => (
+                <Reveal key={r.title} delay={i * 0.08}>
+                  <div className={`h-full rounded-2xl border p-6 ${i === 0 ? "border-accent-light/40 bg-accent-light/[0.06]" : "border-white/10 bg-white/[0.025]"}`}>
+                    <h3 className="text-lg font-semibold">{r.title}</h3>
+                    <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-white/65">
+                      {r.items.map((it) => (
+                        <li key={it}>{it}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </Section>
+
           {/* Hazards */}
           <Section
             id="hazards"
-            eyebrow="Hazards we cover"
+            eyebrow="Hazards in the demo"
             title="Five hazards, honestly labelled"
-            intro="Some hazards are harder to predict from the data we can get. We mark those as experimental."
+            intro="Each hazard is labelled with what it is today. None of them is validated yet."
           >
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {HAZARDS.map((h, i) => (
@@ -321,11 +420,9 @@ export default function Home() {
                           {h.icon}
                         </svg>
                       </span>
-                      {h.experimental && (
-                        <span className="shrink-0 rounded-full border border-accent-light/35 px-2.5 py-0.5 text-xs font-medium text-accent-light">
-                          Experimental
-                        </span>
-                      )}
+                      <span className="shrink-0 rounded-full border border-accent-light/35 px-2.5 py-0.5 text-xs font-medium text-accent-light">
+                        {h.tag}
+                      </span>
                     </div>
                     <h3 className="mt-5 text-lg font-semibold">{h.name}</h3>
                     <p className="mt-2 leading-relaxed text-white/60">{h.body}</p>
@@ -340,7 +437,7 @@ export default function Home() {
             id="data"
             glow="right"
             eyebrow="Data sources"
-            title="What we plan to use, and where we stand"
+            title="What we use, and where we stand"
             intro="No MOSDAC or IMD data is stored in this site or repo. Their terms do not allow redistribution."
           >
             <Reveal>
@@ -445,7 +542,8 @@ export default function Home() {
               </h2>
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/60">
                 The demo runs the engine on three made-up storm days over Kerala: warning zones, storm tracks, arrival windows with a range,
-                new storms seen first by satellite, and places where we say the forecast is not reliable.
+                new storms seen first by satellite, and places where we say the forecast is not reliable. Prototype UI, synthetic demo
+                data.
               </p>
               <Link
                 href="/demo"

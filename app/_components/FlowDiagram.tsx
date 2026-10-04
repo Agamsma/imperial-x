@@ -5,11 +5,11 @@ import { usePrefersReducedMotion } from "@/lib/useReducedMotionPref";
 const INPUTS = ["Doppler radar", "INSAT-3D/3DR IR", "Lightning data"];
 
 const STEPS = [
-  { title: "Ingest", lines: ["Pull radar, satellite", "and lightning feeds"] },
-  { title: "Align", lines: ["One 2 km grid,", "every 10 minutes"] },
-  { title: "Predict", lines: ["pysteps baseline", "+ AI fusion model"] },
-  { title: "Decide", lines: ["IMD colours and", "arrival windows"] },
-  { title: "Show", lines: ["GIS dashboard", "for officials"] },
+  { title: "Ingest", lines: ["Synthetic inputs now;", "archived files next"] },
+  { title: "Align", lines: ["Quality checks,", "2 km grid per scan"] },
+  { title: "Predict", lines: ["Tracking, advection,", "small CNN, ensemble"] },
+  { title: "Decide", lines: ["IMD colour levels,", "arrival windows"] },
+  { title: "Show", lines: ["Dashboard and API;", "CAP export planned"] },
 ];
 
 const LIGHT = "#8DB9E3";

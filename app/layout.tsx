@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 });
 
 const DESCRIPTION =
-  "VajraNow is a web dashboard that tells officials which storm hazard is coming, exactly where, how sure we are, and how many minutes they have. SIH 2026 idea by Team OmniSense.";
+  "VajraNow is a web dashboard that tells officials which storm hazard is coming, where and how precisely, how sure we are, and how many minutes they have. SIH 2026 idea by Team OmniSense.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
