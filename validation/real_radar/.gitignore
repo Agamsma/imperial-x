@@ -1,0 +1,4 @@
+# MOSDAC raw files are never committed (MOSDAC terms do not allow redistribution)
+data/
+# Intermediate arrays, rebuilt by composite.py
+work/

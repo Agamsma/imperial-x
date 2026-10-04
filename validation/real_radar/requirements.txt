@@ -1,0 +1,8 @@
+# Versions used for the run recorded in skill_results.json (Python 3.13, Windows 11).
+netCDF4==1.7.4
+cftime==1.6.6
+h5py==3.16.0
+numpy==2.5.3
+scipy==1.18.1
+opencv-python==5.0.0.93
+matplotlib==3.11.2
