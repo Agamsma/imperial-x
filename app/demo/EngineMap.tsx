@@ -113,7 +113,7 @@ function popupHtml(p: NonNullable<PointState>): string {
     <div class="vn-pop-body"><b>${esc(d.arrival.text)}</b><br/><span>${esc(d.arrival.detail)}</span></div>
     <div class="vn-pop-strip">${squares}</div>
     <div class="vn-pop-scale"><span>Now</span><span>+60</span><span>+120 min</span></div>
-    <div class="vn-pop-meta">Lightning chance (max): ${ltg}%<br/>Rain next hour: ${d.rain_next_hour_mm.median} mm (up to ${d.rain_next_hour_mm.p90} mm)</div>`;
+    <div class="vn-pop-meta">Lightning chance (radar proxy, max): ${ltg}%<br/>Rain next hour: ${d.rain_next_hour_mm.median} mm (up to ${d.rain_next_hour_mm.p90} mm)</div>`;
 }
 
 export default function EngineMap({ bundle, frameIndex, layers, selectedPlace, onSelectPlace, onPointClick, point, focus, fitTo }: Props) {

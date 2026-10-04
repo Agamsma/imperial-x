@@ -348,7 +348,7 @@ export default function EngineDashboard({
                 ))}
               </span>
               <span className="flex items-center gap-1">
-                <span className="inline-block h-2.5 w-2.5 rounded-full border border-white bg-[#111827]" /> Lightning (last 10 min)
+                <span className="inline-block h-2.5 w-2.5 rounded-full border border-white bg-[#111827]" /> Synthetic strikes (last 10 min)
               </span>
               <span className="flex items-center gap-1">
                 <span className="inline-block w-5 border-t-2 border-dashed border-accent" /> Track cone

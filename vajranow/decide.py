@@ -125,11 +125,11 @@ class StormCell:
     def to_json(self) -> dict:
         hazards = []
         if self.lightning_10min > 0 or self.max_dbz >= THRESHOLDS_DBZ["lightning"]:
-            hazards.append("Lightning")
+            hazards.append("Lightning (radar proxy)")
         if self.hail:
-            hazards.append("Hail signal (experimental)")
+            hazards.append("Hail flag (55 dBZ, not validated)")
         if self.gust:
-            hazards.append("Damaging gusts (experimental)")
+            hazards.append("Strong-wind proxy (not validated)")
         if self.max_rain_mm_h >= 50:
             hazards.append("Very heavy rain")
         return {
@@ -386,11 +386,11 @@ def assess_point(
 
     hazards = []
     if max(p_ltg) >= 0.5:
-        hazards.append("Lightning likely")
+        hazards.append("Lightning likely (radar proxy)")
     elif max(p_ltg) >= 0.3:
-        hazards.append("Lightning possible")
+        hazards.append("Lightning possible (radar proxy)")
     if max(p_hail) >= 0.3:
-        hazards.append("Hail signal (experimental)")
+        hazards.append("Hail flag (55 dBZ, not validated)")
     if p_r100 >= 0.3:
         hazards.append("Cloudburst threshold may be crossed (experimental)")
     elif p_r50 >= 0.3:
@@ -399,7 +399,7 @@ def assess_point(
         if not cell.gust:
             continue
         if any(haversine_km(p["lon"], p["lat"], place.lon, place.lat) <= 12.0 for p in cell.track):
-            hazards.append("Damaging gusts possible (experimental)")
+            hazards.append("Strong winds possible (proxy, not validated)")
             break
     if near_init:
         hazards.append("New storms may form nearby (experimental)")
