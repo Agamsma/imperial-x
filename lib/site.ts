@@ -1,4 +1,5 @@
 export const GITHUB_URL = "https://github.com/Agamsma/vajranow";
+export const VALIDATION_URL = `${GITHUB_URL}/tree/main/validation/real_radar`;
 
 export const TEAM = [
   { name: "Agam Sharma", role: "Team leader" },

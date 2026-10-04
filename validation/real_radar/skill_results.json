@@ -1,0 +1,884 @@
+{
+ "description": "Preliminary baseline, TERLS radar, persistence vs Farneback motion extrapolation. Team analysis.",
+ "settings": {
+  "thresholds_dbz": [
+   20,
+   30
+  ],
+  "tolerances_km": [
+   0,
+   3
+  ],
+  "leads_scans": [
+   1,
+   2
+  ],
+  "max_gap_min": 20,
+  "min_echo_pixels": 5,
+  "grid_km": 1,
+  "opencv": "5.0.0",
+  "numpy": "2.5.3"
+ },
+ "days": {
+  "2026-05-10": {
+   "scans": 25,
+   "first": "09:03:09",
+   "last": "16:08:13",
+   "gaps_over_20_min": [
+    [
+     "14:42:56",
+     "15:04:35",
+     21.7
+    ],
+    [
+     "15:04:35",
+     "16:08:13",
+     63.6
+    ]
+   ],
+   "median_cell_motion_kmh": 6.3,
+   "scores": {
+    "15min_20dBZ_tol0km": {
+     "pairs": 18,
+     "persistence_csi": 0.234,
+     "motion_csi": 0.243,
+     "motion_better_frac": 0.5
+    },
+    "15min_20dBZ_tol3km": {
+     "pairs": 18,
+     "persistence_csi": 0.596,
+     "motion_csi": 0.567,
+     "motion_better_frac": 0.33
+    },
+    "15min_30dBZ_tol0km": {
+     "pairs": 15,
+     "persistence_csi": 0.203,
+     "motion_csi": 0.202,
+     "motion_better_frac": 0.53
+    },
+    "15min_30dBZ_tol3km": {
+     "pairs": 15,
+     "persistence_csi": 0.681,
+     "motion_csi": 0.635,
+     "motion_better_frac": 0.33
+    },
+    "30min_20dBZ_tol0km": {
+     "pairs": 18,
+     "persistence_csi": 0.135,
+     "motion_csi": 0.13,
+     "motion_better_frac": 0.39
+    },
+    "30min_20dBZ_tol3km": {
+     "pairs": 18,
+     "persistence_csi": 0.486,
+     "motion_csi": 0.398,
+     "motion_better_frac": 0.28
+    },
+    "30min_30dBZ_tol0km": {
+     "pairs": 16,
+     "persistence_csi": 0.09,
+     "motion_csi": 0.069,
+     "motion_better_frac": 0.25
+    },
+    "30min_30dBZ_tol3km": {
+     "pairs": 16,
+     "persistence_csi": 0.488,
+     "motion_csi": 0.373,
+     "motion_better_frac": 0.25
+    }
+   }
+  },
+  "2026-05-11": {
+   "scans": 18,
+   "first": "10:11:24",
+   "last": "14:40:39",
+   "gaps_over_20_min": [
+    [
+     "11:43:22",
+     "12:07:37",
+     24.2
+    ]
+   ],
+   "median_cell_motion_kmh": 12.3,
+   "scores": {
+    "15min_20dBZ_tol0km": {
+     "pairs": 14,
+     "persistence_csi": 0.204,
+     "motion_csi": 0.222,
+     "motion_better_frac": 0.64
+    },
+    "15min_20dBZ_tol3km": {
+     "pairs": 14,
+     "persistence_csi": 0.642,
+     "motion_csi": 0.664,
+     "motion_better_frac": 0.57
+    },
+    "15min_30dBZ_tol0km": {
+     "pairs": 11,
+     "persistence_csi": 0.076,
+     "motion_csi": 0.091,
+     "motion_better_frac": 0.45
+    },
+    "15min_30dBZ_tol3km": {
+     "pairs": 11,
+     "persistence_csi": 0.44,
+     "motion_csi": 0.509,
+     "motion_better_frac": 0.55
+    },
+    "30min_20dBZ_tol0km": {
+     "pairs": 14,
+     "persistence_csi": 0.099,
+     "motion_csi": 0.097,
+     "motion_better_frac": 0.5
+    },
+    "30min_20dBZ_tol3km": {
+     "pairs": 14,
+     "persistence_csi": 0.366,
+     "motion_csi": 0.388,
+     "motion_better_frac": 0.57
+    },
+    "30min_30dBZ_tol0km": {
+     "pairs": 12,
+     "persistence_csi": 0.012,
+     "motion_csi": 0.022,
+     "motion_better_frac": 0.42
+    },
+    "30min_30dBZ_tol3km": {
+     "pairs": 12,
+     "persistence_csi": 0.12,
+     "motion_csi": 0.168,
+     "motion_better_frac": 0.5
+    }
+   }
+  }
+ },
+ "pooled": {
+  "15min_20dBZ_tol0km": {
+   "pairs": 32,
+   "pairs_by_day": [
+    18,
+    14
+   ],
+   "persistence_csi": 0.2209,
+   "motion_csi": 0.2339
+  },
+  "15min_20dBZ_tol3km": {
+   "pairs": 32,
+   "pairs_by_day": [
+    18,
+    14
+   ],
+   "persistence_csi": 0.6163,
+   "motion_csi": 0.6092
+  },
+  "15min_30dBZ_tol0km": {
+   "pairs": 26,
+   "pairs_by_day": [
+    15,
+    11
+   ],
+   "persistence_csi": 0.1492,
+   "motion_csi": 0.1551
+  },
+  "15min_30dBZ_tol3km": {
+   "pairs": 26,
+   "pairs_by_day": [
+    15,
+    11
+   ],
+   "persistence_csi": 0.5791,
+   "motion_csi": 0.5812
+  },
+  "30min_20dBZ_tol0km": {
+   "pairs": 32,
+   "pairs_by_day": [
+    18,
+    14
+   ],
+   "persistence_csi": 0.1195,
+   "motion_csi": 0.1154
+  },
+  "30min_20dBZ_tol3km": {
+   "pairs": 32,
+   "pairs_by_day": [
+    18,
+    14
+   ],
+   "persistence_csi": 0.4337,
+   "motion_csi": 0.3933
+  },
+  "30min_30dBZ_tol0km": {
+   "pairs": 28,
+   "pairs_by_day": [
+    16,
+    12
+   ],
+   "persistence_csi": 0.0561,
+   "motion_csi": 0.0484
+  },
+  "30min_30dBZ_tol3km": {
+   "pairs": 28,
+   "pairs_by_day": [
+    16,
+    12
+   ],
+   "persistence_csi": 0.3302,
+   "motion_csi": 0.2856
+  }
+ },
+ "pairs": [
+  {
+   "day": "2026-05-10",
+   "lead": "15min",
+   "motion_from": "09:03:09",
+   "start": "09:18:28",
+   "target": "09:33:47",
+   "lead_min": 15.32,
+   "persistence_csi": 0.6076,
+   "motion_csi": 0.5405
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "15min",
+   "motion_from": "09:18:28",
+   "start": "09:33:47",
+   "target": "09:49:08",
+   "lead_min": 15.35,
+   "persistence_csi": 0.7552,
+   "motion_csi": 0.7761
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "15min",
+   "motion_from": "09:33:47",
+   "start": "09:49:08",
+   "target": "10:04:27",
+   "lead_min": 15.32,
+   "persistence_csi": 0.4059,
+   "motion_csi": 0.5063
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "15min",
+   "motion_from": "09:49:08",
+   "start": "10:04:27",
+   "target": "10:19:46",
+   "lead_min": 15.32,
+   "persistence_csi": 0.1154,
+   "motion_csi": 0.2
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "15min",
+   "motion_from": "10:04:27",
+   "start": "10:19:46",
+   "target": "10:35:08",
+   "lead_min": 15.37,
+   "persistence_csi": 0.0,
+   "motion_csi": 0.0
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "15min",
+   "motion_from": "10:19:46",
+   "start": "10:35:08",
+   "target": "10:53:16",
+   "lead_min": 18.13,
+   "persistence_csi": 0.0,
+   "motion_csi": 0.0
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "15min",
+   "motion_from": "10:35:08",
+   "start": "10:53:16",
+   "target": "11:08:19",
+   "lead_min": 15.05,
+   "persistence_csi": 0.0,
+   "motion_csi": 0.0
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "15min",
+   "motion_from": "11:38:56",
+   "start": "11:54:18",
+   "target": "12:09:37",
+   "lead_min": 15.32,
+   "persistence_csi": 0.0,
+   "motion_csi": 0.0
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "15min",
+   "motion_from": "11:54:18",
+   "start": "12:09:37",
+   "target": "12:24:55",
+   "lead_min": 15.3,
+   "persistence_csi": 0.5376,
+   "motion_csi": 0.2903
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "15min",
+   "motion_from": "12:09:37",
+   "start": "12:24:55",
+   "target": "12:40:17",
+   "lead_min": 15.37,
+   "persistence_csi": 0.9324,
+   "motion_csi": 0.5743
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "15min",
+   "motion_from": "12:24:55",
+   "start": "12:40:17",
+   "target": "12:55:36",
+   "lead_min": 15.32,
+   "persistence_csi": 0.9259,
+   "motion_csi": 0.8783
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "15min",
+   "motion_from": "12:40:17",
+   "start": "12:55:36",
+   "target": "13:10:58",
+   "lead_min": 15.37,
+   "persistence_csi": 0.8889,
+   "motion_csi": 0.8911
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "15min",
+   "motion_from": "12:55:36",
+   "start": "13:10:58",
+   "target": "13:26:16",
+   "lead_min": 15.3,
+   "persistence_csi": 0.8466,
+   "motion_csi": 0.8068
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "15min",
+   "motion_from": "13:10:58",
+   "start": "13:26:16",
+   "target": "13:41:35",
+   "lead_min": 15.32,
+   "persistence_csi": 0.9681,
+   "motion_csi": 0.9587
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "15min",
+   "motion_from": "13:26:16",
+   "start": "13:41:35",
+   "target": "13:56:54",
+   "lead_min": 15.32,
+   "persistence_csi": 0.9685,
+   "motion_csi": 0.9658
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "15min",
+   "motion_from": "13:41:35",
+   "start": "13:56:54",
+   "target": "14:12:16",
+   "lead_min": 15.37,
+   "persistence_csi": 0.8711,
+   "motion_csi": 0.9061
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "15min",
+   "motion_from": "13:56:54",
+   "start": "14:12:16",
+   "target": "14:27:34",
+   "lead_min": 15.3,
+   "persistence_csi": 0.9587,
+   "motion_csi": 0.9507
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "15min",
+   "motion_from": "14:12:16",
+   "start": "14:27:34",
+   "target": "14:42:56",
+   "lead_min": 15.37,
+   "persistence_csi": 0.9534,
+   "motion_csi": 0.956
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "30min",
+   "motion_from": "09:03:09",
+   "start": "09:18:28",
+   "target": "09:49:08",
+   "lead_min": 30.67,
+   "persistence_csi": 0.4562,
+   "motion_csi": 0.1505
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "30min",
+   "motion_from": "09:18:28",
+   "start": "09:33:47",
+   "target": "10:04:27",
+   "lead_min": 30.67,
+   "persistence_csi": 0.3212,
+   "motion_csi": 0.5455
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "30min",
+   "motion_from": "09:33:47",
+   "start": "09:49:08",
+   "target": "10:19:46",
+   "lead_min": 30.63,
+   "persistence_csi": 0.0326,
+   "motion_csi": 0.0423
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "30min",
+   "motion_from": "09:49:08",
+   "start": "10:04:27",
+   "target": "10:35:08",
+   "lead_min": 30.68,
+   "persistence_csi": 0.0,
+   "motion_csi": 0.0
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "30min",
+   "motion_from": "10:04:27",
+   "start": "10:19:46",
+   "target": "10:53:16",
+   "lead_min": 33.5,
+   "persistence_csi": 0.5714,
+   "motion_csi": 0.0
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "30min",
+   "motion_from": "10:35:08",
+   "start": "10:53:16",
+   "target": "11:23:37",
+   "lead_min": 30.35,
+   "persistence_csi": 0.0,
+   "motion_csi": 0.0
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "30min",
+   "motion_from": "11:23:37",
+   "start": "11:38:56",
+   "target": "12:09:37",
+   "lead_min": 30.68,
+   "persistence_csi": 0.0,
+   "motion_csi": 0.0
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "30min",
+   "motion_from": "11:38:56",
+   "start": "11:54:18",
+   "target": "12:24:55",
+   "lead_min": 30.62,
+   "persistence_csi": 0.0,
+   "motion_csi": 0.0
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "30min",
+   "motion_from": "11:54:18",
+   "start": "12:09:37",
+   "target": "12:40:17",
+   "lead_min": 30.67,
+   "persistence_csi": 0.4444,
+   "motion_csi": 0.1346
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "30min",
+   "motion_from": "12:09:37",
+   "start": "12:24:55",
+   "target": "12:55:36",
+   "lead_min": 30.68,
+   "persistence_csi": 0.7906,
+   "motion_csi": 0.2995
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "30min",
+   "motion_from": "12:24:55",
+   "start": "12:40:17",
+   "target": "13:10:58",
+   "lead_min": 30.68,
+   "persistence_csi": 0.7732,
+   "motion_csi": 0.7838
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "30min",
+   "motion_from": "12:40:17",
+   "start": "12:55:36",
+   "target": "13:26:16",
+   "lead_min": 30.67,
+   "persistence_csi": 0.615,
+   "motion_csi": 0.6011
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "30min",
+   "motion_from": "12:55:36",
+   "start": "13:10:58",
+   "target": "13:41:35",
+   "lead_min": 30.62,
+   "persistence_csi": 0.7365,
+   "motion_csi": 0.6548
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "30min",
+   "motion_from": "13:10:58",
+   "start": "13:26:16",
+   "target": "13:56:54",
+   "lead_min": 30.63,
+   "persistence_csi": 0.8511,
+   "motion_csi": 0.8807
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "30min",
+   "motion_from": "13:26:16",
+   "start": "13:41:35",
+   "target": "14:12:16",
+   "lead_min": 30.68,
+   "persistence_csi": 0.7067,
+   "motion_csi": 0.7302
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "30min",
+   "motion_from": "13:41:35",
+   "start": "13:56:54",
+   "target": "14:27:34",
+   "lead_min": 30.67,
+   "persistence_csi": 0.8128,
+   "motion_csi": 0.7848
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "30min",
+   "motion_from": "13:56:54",
+   "start": "14:12:16",
+   "target": "14:42:56",
+   "lead_min": 30.67,
+   "persistence_csi": 0.9077,
+   "motion_csi": 0.8912
+  },
+  {
+   "day": "2026-05-10",
+   "lead": "30min",
+   "motion_from": "14:12:16",
+   "start": "14:27:34",
+   "target": "15:04:35",
+   "lead_min": 37.02,
+   "persistence_csi": 0.7301,
+   "motion_csi": 0.6608
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "15min",
+   "motion_from": "10:11:24",
+   "start": "10:26:45",
+   "target": "10:42:04",
+   "lead_min": 15.32,
+   "persistence_csi": 0.8166,
+   "motion_csi": 0.7662
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "15min",
+   "motion_from": "10:26:45",
+   "start": "10:42:04",
+   "target": "10:57:23",
+   "lead_min": 15.32,
+   "persistence_csi": 0.809,
+   "motion_csi": 0.8976
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "15min",
+   "motion_from": "10:42:04",
+   "start": "10:57:23",
+   "target": "11:12:42",
+   "lead_min": 15.32,
+   "persistence_csi": 0.6919,
+   "motion_csi": 0.8244
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "15min",
+   "motion_from": "10:57:23",
+   "start": "11:12:42",
+   "target": "11:28:03",
+   "lead_min": 15.35,
+   "persistence_csi": 0.7459,
+   "motion_csi": 0.7127
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "15min",
+   "motion_from": "11:12:42",
+   "start": "11:28:03",
+   "target": "11:43:22",
+   "lead_min": 15.32,
+   "persistence_csi": 0.8386,
+   "motion_csi": 0.8656
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "15min",
+   "motion_from": "12:07:37",
+   "start": "12:22:39",
+   "target": "12:37:57",
+   "lead_min": 15.3,
+   "persistence_csi": 0.6193,
+   "motion_csi": 0.6537
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "15min",
+   "motion_from": "12:22:39",
+   "start": "12:37:57",
+   "target": "12:53:19",
+   "lead_min": 15.37,
+   "persistence_csi": 0.4018,
+   "motion_csi": 0.4221
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "15min",
+   "motion_from": "12:37:57",
+   "start": "12:53:19",
+   "target": "13:08:41",
+   "lead_min": 15.37,
+   "persistence_csi": 0.5607,
+   "motion_csi": 0.657
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "15min",
+   "motion_from": "12:53:19",
+   "start": "13:08:41",
+   "target": "13:23:59",
+   "lead_min": 15.3,
+   "persistence_csi": 0.6178,
+   "motion_csi": 0.5491
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "15min",
+   "motion_from": "13:08:41",
+   "start": "13:23:59",
+   "target": "13:39:21",
+   "lead_min": 15.37,
+   "persistence_csi": 0.5161,
+   "motion_csi": 0.5619
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "15min",
+   "motion_from": "13:23:59",
+   "start": "13:39:21",
+   "target": "13:54:40",
+   "lead_min": 15.32,
+   "persistence_csi": 0.185,
+   "motion_csi": 0.1098
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "15min",
+   "motion_from": "13:39:21",
+   "start": "13:54:40",
+   "target": "14:10:02",
+   "lead_min": 15.37,
+   "persistence_csi": 0.5625,
+   "motion_csi": 0.6962
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "15min",
+   "motion_from": "13:54:40",
+   "start": "14:10:02",
+   "target": "14:25:21",
+   "lead_min": 15.32,
+   "persistence_csi": 0.9697,
+   "motion_csi": 0.9394
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "15min",
+   "motion_from": "14:10:02",
+   "start": "14:25:21",
+   "target": "14:40:39",
+   "lead_min": 15.3,
+   "persistence_csi": 0.6522,
+   "motion_csi": 0.6364
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "30min",
+   "motion_from": "10:11:24",
+   "start": "10:26:45",
+   "target": "10:57:23",
+   "lead_min": 30.63,
+   "persistence_csi": 0.6615,
+   "motion_csi": 0.6513
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "30min",
+   "motion_from": "10:26:45",
+   "start": "10:42:04",
+   "target": "11:12:42",
+   "lead_min": 30.63,
+   "persistence_csi": 0.424,
+   "motion_csi": 0.5854
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "30min",
+   "motion_from": "10:42:04",
+   "start": "10:57:23",
+   "target": "11:28:03",
+   "lead_min": 30.67,
+   "persistence_csi": 0.3922,
+   "motion_csi": 0.6356
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "30min",
+   "motion_from": "10:57:23",
+   "start": "11:12:42",
+   "target": "11:43:22",
+   "lead_min": 30.67,
+   "persistence_csi": 0.5839,
+   "motion_csi": 0.6256
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "30min",
+   "motion_from": "11:12:42",
+   "start": "11:28:03",
+   "target": "12:07:37",
+   "lead_min": 39.57,
+   "persistence_csi": 0.4309,
+   "motion_csi": 0.4937
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "30min",
+   "motion_from": "11:28:03",
+   "start": "11:43:22",
+   "target": "12:22:39",
+   "lead_min": 39.28,
+   "persistence_csi": 0.2804,
+   "motion_csi": 0.4682
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "30min",
+   "motion_from": "12:07:37",
+   "start": "12:22:39",
+   "target": "12:53:19",
+   "lead_min": 30.67,
+   "persistence_csi": 0.2022,
+   "motion_csi": 0.2061
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "30min",
+   "motion_from": "12:22:39",
+   "start": "12:37:57",
+   "target": "13:08:41",
+   "lead_min": 30.73,
+   "persistence_csi": 0.2861,
+   "motion_csi": 0.2575
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "30min",
+   "motion_from": "12:37:57",
+   "start": "12:53:19",
+   "target": "13:23:59",
+   "lead_min": 30.67,
+   "persistence_csi": 0.3322,
+   "motion_csi": 0.4367
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "30min",
+   "motion_from": "12:53:19",
+   "start": "13:08:41",
+   "target": "13:39:21",
+   "lead_min": 30.67,
+   "persistence_csi": 0.2679,
+   "motion_csi": 0.2927
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "30min",
+   "motion_from": "13:08:41",
+   "start": "13:23:59",
+   "target": "13:54:40",
+   "lead_min": 30.68,
+   "persistence_csi": 0.3145,
+   "motion_csi": 0.3134
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "30min",
+   "motion_from": "13:23:59",
+   "start": "13:39:21",
+   "target": "14:10:02",
+   "lead_min": 30.68,
+   "persistence_csi": 0.0,
+   "motion_csi": 0.0
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "30min",
+   "motion_from": "13:39:21",
+   "start": "13:54:40",
+   "target": "14:25:21",
+   "lead_min": 30.68,
+   "persistence_csi": 0.3671,
+   "motion_csi": 0.087
+  },
+  {
+   "day": "2026-05-11",
+   "lead": "30min",
+   "motion_from": "13:54:40",
+   "start": "14:10:02",
+   "target": "14:40:39",
+   "lead_min": 30.62,
+   "persistence_csi": 0.5862,
+   "motion_csi": 0.3721
+  }
+ ],
+ "median_scan_spacing_min": 15.3,
+ "headline": {
+  "15min": {
+   "pairs": 32,
+   "persistence_csi": 0.62,
+   "motion_csi": 0.61
+  },
+  "30min": {
+   "pairs": 32,
+   "persistence_csi": 0.43,
+   "motion_csi": 0.39
+  }
+ }
+}

@@ -1,7 +1,8 @@
 # vajranow/ (the engine)
 
 The VajraNow nowcasting engine, in Python. Runtime needs only numpy and FastAPI.
-Everything runs on synthetic storms until real MOSDAC data is wired in.
+Everything runs on synthetic storms; reading archived MOSDAC files is planned. The
+separate two-day real-data baseline is in [`validation/real_radar/`](../validation/real_radar/).
 
 | Module | Step | What it does |
 | --- | --- | --- |
@@ -12,8 +13,8 @@ Everything runs on synthetic storms until real MOSDAC data is wired in.
 | `observe.py` | Ingest | Builds what the engine sees at analysis time (shared by the API and training) |
 | `motion.py` | Predict | TREC block-matching motion with confidence |
 | `advection.py` | Predict | Bilinear sampling and semi-Lagrangian extrapolation |
-| `fusion.py` | Predict | Features and numpy inference for the fusion network (`weights/fusion_v1.npz`) |
-| `ensemble.py` | Predict | 20-member ensemble plus control |
+| `fusion.py` | Predict | Features and numpy inference for the small CNN trained on synthetic storms (`weights/fusion_v1.npz`) |
+| `ensemble.py` | Predict | 20-member ensemble plus control (probabilities not calibrated) |
 | `hazards.py` | Decide | Z-R rain rate with hail cap, thresholds, IMD level rules |
 | `decide.py` | Decide | Storm cells, arrival windows, reliability flags, new-storm zones, alerts |
 | `contour.py` | Show | Marching squares and simplification for warning polygons |

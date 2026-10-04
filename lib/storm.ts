@@ -266,7 +266,7 @@ export function buildAlerts(arrivals: Arrival[]): Alert[] {
     return {
       level: a.worst,
       title: `${a.place.name}: ${lt.name}, ${lt.action.toLowerCase()}`,
-      body: `Storm core in ${a.text}. Lightning likely. Hail signal (experimental).`,
+      body: `Storm core in ${a.text}. Lightning likely (radar proxy). Hail flag (not validated).`,
     };
   });
   alerts.push({

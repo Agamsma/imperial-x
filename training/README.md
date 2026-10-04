@@ -1,7 +1,7 @@
 # training/
 
-Training and evaluation for the fusion step. Needs PyTorch (CPU is fine); the
-live engine does not.
+Training and evaluation for the small CNN (the fusion step). Needs PyTorch (CPU is
+fine); the deployed engine does not. Trained on synthetic storms only.
 
 | File | What it does |
 | --- | --- |

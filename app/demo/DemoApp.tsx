@@ -10,7 +10,7 @@ const DEFAULT_SCENARIO = "kochi-squall";
 const STEPS = [
   "Quality checks on radar scans",
   "Tracking storm motion (TREC)",
-  "Fusion step: growth from satellite and lightning",
+  "Small CNN: growth from satellite and lightning",
   "20-member ensemble, 2 hours ahead",
   "IMD colour levels and arrival windows",
 ];

@@ -7,7 +7,7 @@ import RadarScene from "./RadarScene";
 import { GITHUB_URL } from "@/lib/site";
 import { usePrefersReducedMotion } from "@/lib/useReducedMotionPref";
 
-const QUESTIONS = ["Which hazard?", "Exactly where?", "How sure?", "How many minutes?"];
+const QUESTIONS = ["Which hazard?", "Where, how precisely?", "How sure?", "How many minutes?"];
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 const label = "text-[10.5px] font-medium uppercase tracking-[0.16em] text-white/60";
@@ -125,7 +125,7 @@ export default function Hero() {
           className="mt-6 max-w-[560px] font-serif text-lg italic leading-relaxed text-white/85 sm:text-xl"
           style={{ textShadow: "0 1px 20px rgba(0,0,0,0.5)" }}
         >
-          A web dashboard that tells officials which storm hazard is coming, exactly where, how sure we are, and how many
+          A web dashboard that tells officials which storm hazard is coming, where and how precisely, how sure we are, and how many
           minutes they have.
         </motion.p>
 

@@ -2,32 +2,33 @@
 
 How VajraNow plans to get each dataset, and where we stand today.
 
-> **Rule for this repo:** never commit downloaded data. MOSDAC and IMD terms do not allow redistribution. Keep all downloads in a local `data/` folder, which is already in `.gitignore`. The website and demo use only synthetic data made in code.
+> **Rule for this repo:** never commit downloaded data. MOSDAC and IMD terms do not allow redistribution. Keep all downloads in a local `data/` folder, which is already in `.gitignore`. The website demo and the engine use only synthetic data made in code. The one exception is the two-day baseline in [`validation/real_radar/`](../validation/real_radar/), which reads MOSDAC files kept outside the repo and lists them in `input_manifest.csv`.
 
 | Source | Used for | Access status |
 | --- | --- | --- |
-| MOSDAC TERLS Doppler radar | Storm cells, motion, hail signal | Access approved |
-| MOSDAC INSAT-3D/3DR | Cloud top cooling, new storm growth | Access approved |
-| ERA5 (Copernicus) | Instability and wind context | Open |
-| SEVIR benchmark | Model pre-training and testing | Open |
+| MOSDAC TERLS Doppler radar | Storm cells and motion. Reflectivity used; velocity not yet processed | Ordered; files for 10 and 11 May 2026 used in the baseline |
+| MOSDAC INSAT-3D/3DR | Cloud top cooling, new storm growth | Ordered; INSAT-3DR files for 10 May 2026 used in the baseline |
+| ISS-LIS (NASA Earthdata) | Spot checks of lightning (retrospective only) | Free |
 | IITM lightning network | Lightning labels and checks | Planned request |
-| Live IMD radar | Live operation | Future, needs approval |
+| ERA5 (Copernicus) / NCMRWF | Weather context (ERA5 retrospective only) | ERA5 open; NCMRWF planned |
+| SEVIR benchmark | Possible pre-training and testing (US data); not used yet | Open |
+| Live IMD radar | Live runs | Future, needs IMD approval |
 
 ## 1. MOSDAC: TERLS Doppler Weather Radar
 
-- **What:** Doppler Weather Radar data from ISRO's radar at TERLS (Thumba Equatorial Rocket Launching Station), Thiruvananthapuram. Reflectivity and radial velocity scans.
+- **What:** Doppler Weather Radar data from ISRO's radar at TERLS (Thumba Equatorial Rocket Launching Station), Thiruvananthapuram. Reflectivity and radial velocity on a 3D grid (product L2C, about 1 km, 0 to 20 km height). In our files, scans are about 15 minutes apart (median 15.3 min). We use reflectivity only; velocity is not processed yet.
 - **How to get it:**
   1. Register at [mosdac.gov.in](https://www.mosdac.gov.in) (MOSDAC, Space Applications Centre, ISRO).
   2. Log in and request the radar product through the data order section.
   3. Wait for approval, then download the files from your order.
-- **Status:** our access is approved.
+- **Status:** ordered. 44 files for 10 and 11 May 2026 were received and used in the [real-data baseline](../validation/real_radar/).
 - **Terms:** for our own research use only. Do not upload these files to GitHub, the website, or any public place.
 
 ## 2. MOSDAC: INSAT-3D / INSAT-3DR imager
 
 - **What:** infrared images from the INSAT-3D and INSAT-3DR geostationary satellites. We plan to use the thermal infrared channel to track cloud top cooling, which is an early sign of a growing storm.
 - **How to get it:** same MOSDAC account. Choose the INSAT-3D or INSAT-3DR imager products and the time range you need.
-- **Status:** our access is approved.
+- **Status:** ordered. 14 INSAT-3DR imager L1B files for 10 May 2026 (30 min frames) were received and used in the baseline.
 - **Terms:** same as above. Research use only, no redistribution.
 
 ## 3. ERA5 reanalysis (Copernicus Climate Data Store)
@@ -57,10 +58,16 @@ How VajraNow plans to get each dataset, and where we stand today.
 
 - **What:** ground based lightning strike data from the Indian Institute of Tropical Meteorology (IITM), Pune.
 - **How to get it:** a formal data request to IITM, explaining the research use.
-- **Status:** planned request, not sent yet. Until we have it, the demo labels lightning as a "proxy" (estimated from radar and satellite signals).
+- **Status:** planned request, not sent yet. Until we have it, the demo labels lightning as a radar proxy (chance of echo of 40 dBZ or more).
 
 ## 6. Live IMD radar
 
 - **What:** real time data from the India Meteorological Department radar network.
 - **How to get it:** only through an official approval or partnership with IMD.
 - **Status:** future. VajraNow will not claim live operation until this is in place.
+
+## 7. ISS-LIS lightning (NASA)
+
+- **What:** lightning flashes seen by the Lightning Imaging Sensor on the International Space Station. Spot passes only, so it can check the lightning proxy on some days but cannot replace a ground network.
+- **How to get it:** free NASA Earthdata account; ISS-LIS Quality Controlled Lightning Data V2 (doi:10.5067/LIS/ISSLIS/DATA111).
+- **Status:** free, not downloaded yet. Retrospective only.
