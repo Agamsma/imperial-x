@@ -54,6 +54,13 @@ The raw files are not committed. MOSDAC terms do not allow redistribution. Order
 - **Satellite:** INSAT-3DR Imager L1B standard full disk, 10 May 2026, 09:15 to 15:45 UTC,
   every 30 min. Files are named `3RIMG_DDMMMYYYY_HHMM_L1B_STD_V01R00.h5`. 14 files.
 
+Scans used: **10 May, 25 scans** (09:03 to 16:08 UTC); **11 May, 18 scans** (10:11 to 14:40 UTC;
+a 19th file, 14:55, is truncated and skipped). That gives 18 pairs on 10 May and 14 on 11 May
+at each lead.
+
+We also hold Cherrapunji radar files (`RSCHR_*_L2B_STD.nc`, 10 and 12 May 2026). They are not
+used in this baseline or anywhere in the repo.
+
 Put them in `validation/real_radar/data/` (any sub-folders are fine). That folder is git
 ignored. Or leave them where they are and pass `--data DIR [DIR ...]` to steps 1 and 3.
 Compare your files with the SHA-256 column of `input_manifest.csv` to be sure they are the
