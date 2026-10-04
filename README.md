@@ -36,7 +36,11 @@ Officials need four answers, fast: **Which hazard? Where, and how precisely? How
 | Real-data baseline | Persistence vs motion extrapolation on TERLS radar, 10 and 11 May 2026, with inputs listed and results | [`validation/real_radar/`](validation/real_radar/) |
 | Tests | Engine, contours, fusion, scenario stories and API | [`tests/`](tests/) |
 | Design | Architecture and warning logic | [`design/architecture.md`](design/architecture.md) |
-| Requirements coverage | Each required output: status, planned predictors, labels and checks | [`docs/requirements-coverage.md`](docs/requirements-coverage.md) |
+| Requirements coverage | Each required output: status, planned predictors, labels and checks, and a line-by-line check against the problem statement | [`docs/requirements-coverage.md`](docs/requirements-coverage.md) |
+| Problem statement | The official SIH26084 text from the portal | [`docs/ps-statement.md`](docs/ps-statement.md) |
+| Reliability gate | What "Not reliable" does today, and the proposed skill-based gate | [`docs/reliability-gate.md`](docs/reliability-gate.md) |
+| Submission audit | Every deck claim checked against the repo, with status | [`docs/submission-audit.md`](docs/submission-audit.md) |
+| Notices | Third-party data, methods, software and template attribution | [`NOTICE.md`](NOTICE.md) |
 
 ## How the engine works
 
@@ -216,4 +220,4 @@ These are intended outcomes. None has been measured.
 
 ## Licence
 
-[MIT](LICENSE)
+[MIT](LICENSE) for our code. Third-party data, methods, software and the deck template keep their own terms: see [NOTICE.md](NOTICE.md).
