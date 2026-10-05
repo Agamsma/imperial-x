@@ -277,7 +277,7 @@ def _run(scenario_id: str) -> NowcastRun:
     w, s, e, n = GRID.bounds
     bundle = {
         "engine": {
-            "name": "VajraNow engine",
+            "name": "Imperial-X engine",
             "version": __version__,
             "data": "synthetic",
             "disclaimer": DISCLAIMER,

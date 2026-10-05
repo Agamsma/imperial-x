@@ -1,6 +1,6 @@
 # Requirements coverage (SIH26084)
 
-How VajraNow covers each output the problem statement asks for: what exists today, and how
+How Imperial-X covers each output the problem statement asks for: what exists today, and how
 each output will be built and checked. Status words match the final idea deck. The official
 problem statement text is in [ps-statement.md](ps-statement.md).
 
@@ -41,9 +41,9 @@ open but are retrospective only. Until labels exist, none of the hazard outputs 
 
 ## Checked against the official problem statement
 
-Each ask in [ps-statement.md](ps-statement.md), and where VajraNow stands.
+Each ask in [ps-statement.md](ps-statement.md), and where Imperial-X stands.
 
-| Problem statement asks for | Where VajraNow stands |
+| Problem statement asks for | Where Imperial-X stands |
 | --- | --- |
 | 0 to 6 h lead time | Demo: 0 to 120 min forecast plus a coarse outlook to 6 h. Blend with NCMRWF model guidance for 3 to 6 h planned |
 | 1 to 3 km resolution | 2 km output grid. Real detail is coarser: satellite about 4 km, radar beam widens with range |

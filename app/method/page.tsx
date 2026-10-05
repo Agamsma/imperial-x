@@ -4,8 +4,8 @@ import SiteFooter from "../_components/SiteFooter";
 import { GITHUB_URL, VALIDATION_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Method | VajraNow",
-  description: "How the VajraNow nowcasting engine works, step by step, with the numbers it uses. Runs on synthetic storms today.",
+  title: "Method | Imperial-X",
+  description: "How the Imperial-X nowcasting engine works, step by step, with the numbers it uses. Runs on synthetic storms today.",
 };
 
 const STEPS = [
@@ -88,7 +88,7 @@ export default function MethodPage() {
       <header className="border-b border-white/10">
         <div className="mx-auto flex h-16 max-w-4xl items-center justify-between px-4 sm:px-6">
           <Link href="/" className="font-semibold tracking-wide">
-            VajraNow
+            Imperial-X
           </Link>
           <nav className="flex gap-5 text-sm text-white/60">
             <Link href="/demo" className="hover:text-white">
@@ -106,7 +106,7 @@ export default function MethodPage() {
 
       <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-16 sm:px-6">
         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-accent-light">Method</p>
-        <h1 className="mt-4 font-serif text-4xl leading-tight sm:text-5xl">How the VajraNow engine works</h1>
+        <h1 className="mt-4 font-serif text-4xl leading-tight sm:text-5xl">How the Imperial-X engine works</h1>
         <p className="mt-5 text-lg leading-relaxed text-white/65">
           The engine runs on synthetic storms. This page explains each step, the numbers it uses, and what is
           still missing before it can be trusted with real data.
@@ -233,7 +233,7 @@ export default function MethodPage() {
               0.39 at +30 minutes. By day, motion helps when storms move (11 May, 12.3 km/h: 0.664 vs 0.642 and 0.388 vs 0.366) but
               not on slow storms (10 May, 6.3 km/h: 0.567 vs 0.596 and 0.398 vs 0.486). Pooled, motion extrapolation does not beat
               persistence, so the model must forecast growth and decay, not just motion. Two days are not enough for a general claim,
-              and the VajraNow engine itself was not run on these files.{" "}
+              and the Imperial-X engine itself was not run on these files.{" "}
               <a href={VALIDATION_URL} className="text-accent-light underline underline-offset-4" target="_blank" rel="noopener noreferrer">
                 Code, inputs and results
               </a>

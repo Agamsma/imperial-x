@@ -1,9 +1,9 @@
 import numpy as np
 
-from vajranow.advection import Sampler, extrapolate
-from vajranow.motion import estimate_motion
-from vajranow.scenarios import SCENARIOS
-from vajranow.synthetic import StormWorld, smooth_noise
+from imperial_x.advection import Sampler, extrapolate
+from imperial_x.motion import estimate_motion
+from imperial_x.scenarios import SCENARIOS
+from imperial_x.synthetic import StormWorld, smooth_noise
 
 
 def _pattern(shape, seed=3):

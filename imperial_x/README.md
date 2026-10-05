@@ -1,6 +1,6 @@
-# vajranow/ (the engine)
+# imperial_x/ (the engine)
 
-The VajraNow nowcasting engine, in Python. Runtime needs only numpy and FastAPI.
+The Imperial-X nowcasting engine, in Python. Runtime needs only numpy and FastAPI.
 Everything runs on synthetic storms; reading archived MOSDAC files is planned. The
 separate two-day real-data baseline is in [`validation/real_radar/`](../validation/real_radar/).
 
@@ -26,7 +26,7 @@ separate two-day real-data baseline is in [`validation/real_radar/`](../validati
 Quick start:
 
 ```python
-from vajranow.pipeline import run_nowcast
+from imperial_x.pipeline import run_nowcast
 
 run = run_nowcast("kochi-squall")
 print(run.bundle["alerts"][0]["title"])

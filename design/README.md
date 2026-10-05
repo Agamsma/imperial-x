@@ -1,6 +1,6 @@
 # design/
 
-System design for VajraNow.
+System design for Imperial-X.
 
 - [architecture.md](architecture.md): the full flow (Ingest, Align, Predict, Decide, Show), grid and timing, warning logic, and verification plan.
 

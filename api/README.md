@@ -1,7 +1,7 @@
 # api/
 
-The Vercel entrypoint for the VajraNow engine API. The app itself lives in
-[`vajranow/service.py`](../vajranow/service.py).
+The Vercel entrypoint for the Imperial-X engine API. The app itself lives in
+[`imperial_x/service.py`](../imperial_x/service.py).
 
 - Docs (live): `/api/py/docs`
 - Reference: [docs/api.md](../docs/api.md)

@@ -1,4 +1,4 @@
-export const GITHUB_URL = "https://github.com/Agamsma/vajranow";
+export const GITHUB_URL = "https://github.com/Agamsma/imperial-x";
 export const VALIDATION_URL = `${GITHUB_URL}/tree/main/validation/real_radar`;
 
 export const TEAM = [

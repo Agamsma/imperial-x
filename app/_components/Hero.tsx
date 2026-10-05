@@ -110,12 +110,12 @@ export default function Hero() {
         </motion.div>
 
         <h1
-          aria-label="VajraNow"
+          aria-label="Imperial-X"
           className="m-0 font-serif uppercase text-white"
           style={{ textShadow: "0 2px 40px rgba(0,0,0,0.5)" }}
         >
-          <Letters word="Vajra" delay={0.25} className="text-[clamp(3.6rem,12vw,8.6rem)] font-normal leading-[0.95] tracking-[0.04em]" />
-          <Letters word="Now" delay={0.55} className="text-[clamp(3.4rem,11.4vw,8.2rem)] font-bold leading-[0.95] tracking-[0.03em]" />
+          <Letters word="Imperial" delay={0.25} className="text-[clamp(3.6rem,12vw,8.6rem)] font-normal leading-[0.95] tracking-[0.04em]" />
+          <Letters word="-X" delay={0.55} className="text-[clamp(3.4rem,11.4vw,8.2rem)] font-bold leading-[0.95] tracking-[0.03em]" />
         </h1>
 
         <motion.p

@@ -1,7 +1,7 @@
-# VajraNow engine API
+# Imperial-X engine API
 
-Base URL: `https://vajranow.vercel.app/api/py`
-Interactive docs: `https://vajranow.vercel.app/api/py/docs`
+Base URL: `https://imperial-x-six.vercel.app/api/py`
+Interactive docs: `https://imperial-x-six.vercel.app/api/py/docs`
 
 > Every response is computed from **synthetic storms**. Not a real forecast and not an official IMD warning.
 
@@ -12,7 +12,7 @@ Interactive docs: `https://vajranow.vercel.app/api/py/docs`
 Engine status.
 
 ```json
-{ "status": "ok", "engine": "VajraNow engine", "version": "0.2.0", "python": "3.13", "data": "synthetic", "fusion_model": "loaded", "disclaimer": "..." }
+{ "status": "ok", "engine": "Imperial-X engine", "version": "0.2.0", "python": "3.13", "data": "synthetic", "fusion_model": "loaded", "disclaimer": "..." }
 ```
 
 ### `GET /v1/scenarios`
@@ -60,7 +60,7 @@ Forecast for any point inside the forecast area (422 outside it).
 Example:
 
 ```bash
-curl "https://vajranow.vercel.app/api/py/v1/nowcast/kochi-squall/point?lon=76.40&lat=10.15"
+curl "https://imperial-x-six.vercel.app/api/py/v1/nowcast/kochi-squall/point?lon=76.40&lat=10.15"
 ```
 
 ### `GET /v1/method`
@@ -73,4 +73,4 @@ Nowcasts for the demo scenarios do not change within a deployment, so Vercel's C
 
 ## How routing works on Vercel
 
-The Next.js site rewrites `/api/py/<path>` to the Python function `api/index.py` and passes the original path as the `__path` query parameter. A small middleware in `vajranow/service.py` puts the path back, so the same FastAPI app runs unchanged locally (uvicorn) and on Vercel.
+The Next.js site rewrites `/api/py/<path>` to the Python function `api/index.py` and passes the original path as the `__path` query parameter. A small middleware in `imperial_x/service.py` puts the path back, so the same FastAPI app runs unchanged locally (uvicorn) and on Vercel.

@@ -186,7 +186,7 @@ export default function EngineDashboard({
 
       <header className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-line bg-white px-4 py-3">
         <Link href="/" className="text-lg font-bold text-accent">
-          VajraNow
+          Imperial-X
         </Link>
         <span className="rounded-md bg-accent px-2 py-1 text-xs font-bold tracking-wide text-white">REPLAY MODE (demo)</span>
         <div className="flex flex-wrap gap-2">
@@ -579,7 +579,7 @@ export default function EngineDashboard({
             )}
 
             <p className="px-1 pt-1 text-xs text-muted">
-              Decision-support prototype. Not an official IMD warning. Every storm, time and alert here comes from synthetic data run through the VajraNow engine.
+              Decision-support prototype. Not an official IMD warning. Every storm, time and alert here comes from synthetic data run through the Imperial-X engine.
             </p>
           </div>
         </aside>

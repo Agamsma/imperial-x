@@ -1,4 +1,4 @@
-"""HTTP API for the VajraNow engine (FastAPI).
+"""HTTP API for the Imperial-X engine (FastAPI).
 
 All routes live under /api/py. On Vercel the Next.js app rewrites
 /api/py/<path> to the Python function at /api/index and passes the original
@@ -79,7 +79,7 @@ def _cached(payload, max_age: str = CACHE) -> JSONResponse:
 
 def create_app() -> FastAPI:
     app = FastAPI(
-        title="VajraNow engine API",
+        title="Imperial-X engine API",
         version=__version__,
         description=(
             "Nowcasting engine for thunderstorms, hail and cloudbursts (0 to 6 hours). "
@@ -98,7 +98,7 @@ def create_app() -> FastAPI:
 
         return Health(
             status="ok",
-            engine="VajraNow engine",
+            engine="Imperial-X engine",
             version=__version__,
             python=platform.python_version(),
             data="synthetic",
@@ -146,6 +146,6 @@ def create_app() -> FastAPI:
 
     @app.get(PREFIX, include_in_schema=False)
     def root():
-        return {"engine": "VajraNow engine", "version": __version__, "docs": f"{PREFIX}/docs", "default_scenario": DEFAULT_SCENARIO}
+        return {"engine": "Imperial-X engine", "version": __version__, "docs": f"{PREFIX}/docs", "default_scenario": DEFAULT_SCENARIO}
 
     return app

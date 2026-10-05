@@ -1,4 +1,4 @@
-"""VajraNow nowcasting engine.
+"""Imperial-X nowcasting engine.
 
 Every number this package produces comes from synthetic storms made in code.
 It shows how the planned pipeline works end to end. It is not a forecast and

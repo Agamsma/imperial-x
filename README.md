@@ -1,14 +1,14 @@
-# VajraNow
+# Imperial-X
 
 **A web dashboard that tells officials which storm hazard is coming, where and how precisely, how sure we are, and how many minutes they have.**
 
 Smart India Hackathon 2026 idea by **Team OmniSense** (Team ID 167415).
 Problem statement **SIH26084**: Convective scale nowcasting for Thunderstorms, Hail and Cloudbursts (06 hr). Ministry of Earth Sciences. Theme: Disaster Management. Category: Software.
 
-- **Website:** https://vajranow.vercel.app
-- **Demo dashboard:** https://vajranow.vercel.app/demo
-- **How the engine works:** https://vajranow.vercel.app/method
-- **API docs:** https://vajranow.vercel.app/api/py/docs
+- **Website:** https://imperial-x-six.vercel.app
+- **Demo dashboard:** https://imperial-x-six.vercel.app/demo
+- **How the engine works:** https://imperial-x-six.vercel.app/method
+- **API docs:** https://imperial-x-six.vercel.app/api/py/docs
 
 > **Status: idea stage.** Nothing here is a real forecast or an official IMD warning.
 >
@@ -32,8 +32,8 @@ Officials need four answers, fast: **Which hazard? Where, and how precisely? How
 | --- | --- | --- |
 | Website | Landing page and method page | [`app/`](app/) |
 | Dashboard | The `/demo` page. Reads everything from the engine API | [`app/demo/`](app/demo/) |
-| Engine | Python nowcasting pipeline: quality checks, tracking, extrapolation, small CNN, ensemble, warnings | [`vajranow/`](vajranow/) |
-| API | FastAPI app, deployed as a Vercel Python function | [`api/index.py`](api/index.py), [`vajranow/service.py`](vajranow/service.py) |
+| Engine | Python nowcasting pipeline: quality checks, tracking, extrapolation, small CNN, ensemble, warnings | [`imperial_x/`](imperial_x/) |
+| API | FastAPI app, deployed as a Vercel Python function | [`api/index.py`](api/index.py), [`imperial_x/service.py`](imperial_x/service.py) |
 | CNN training | PyTorch training and evaluation on synthetic storms | [`training/`](training/) |
 | Real-data baseline | Persistence vs motion extrapolation on TERLS radar, 10 and 11 May 2026, with inputs listed and results | [`validation/real_radar/`](validation/real_radar/) |
 | Tests | Engine, contours, fusion, scenario stories and API | [`tests/`](tests/) |
@@ -56,7 +56,7 @@ On one 2 km grid over south Kerala (the 250 km range of the TERLS Doppler radar)
 6. **Warnings.** IMD colour levels, arrival windows as a range (10th to 90th percentile across the ensemble), unvalidated hail, strong-wind and cloudburst flags, new-storm zones from satellite, and honest "not reliable" labels in hilly terrain or outside radar coverage.
 7. **Show.** Warning polygons (marching squares), radar frames, storm tracks with uncertainty cones, and point forecasts for any place on the map.
 
-Every number the engine uses is on the [method page](https://vajranow.vercel.app/method).
+Every number the engine uses is on the [method page](https://imperial-x-six.vercel.app/method).
 
 ### Missing data: what the code does today
 
@@ -78,7 +78,7 @@ A first check on real data, separate from the engine: TERLS radar and INSAT-3DR 
 | 11 May | 12.3 km/h | 14 | 0.642 vs 0.664 | 0.366 vs 0.388 | Motion |
 | Both days, pooled | | 32 | 0.62 vs 0.61 | 0.43 vs 0.39 | Persistence (by 0.01 at +15 min) |
 
-CSI = hits / (hits + misses + false alarms), echo of 20 dBZ or more, 3 km tolerance, Farneback optical flow for the motion. Two days are too few for a general claim, and the VajraNow engine has not been run on these files yet.
+CSI = hits / (hits + misses + false alarms), echo of 20 dBZ or more, 3 km tolerance, Farneback optical flow for the motion. Two days are too few for a general claim, and the Imperial-X engine has not been run on these files yet.
 
 Scripts, the list of input files, results and how to rerun it: [validation/real_radar/](validation/real_radar/).
 
@@ -105,7 +105,7 @@ Open a scenario directly: `/demo?scenario=ghats-afternoon`.
 | `GET /api/py/v1/method` | Thresholds and rules, for transparency |
 
 ```bash
-curl "https://vajranow.vercel.app/api/py/v1/nowcast/kochi-squall/point?lon=76.40&lat=10.15"
+curl "https://imperial-x-six.vercel.app/api/py/v1/nowcast/kochi-squall/point?lon=76.40&lat=10.15"
 ```
 
 Full reference: [docs/api.md](docs/api.md).
@@ -206,7 +206,7 @@ These are intended outcomes. None has been measured.
 
 ## Responsible use
 
-- VajraNow is a **decision-support prototype. It is not an official IMD warning.** Official warnings come only from IMD.
+- Imperial-X is a **decision-support prototype. It is not an official IMD warning.** Official warnings come only from IMD.
 - The engine runs on synthetic storms. The only real-data result is the two-day baseline above, where motion extrapolation did not beat persistence.
 - Scores on synthetic storms are used only inside the tests to stop changes that make things worse than the baseline; they are never published as accuracy.
 - Places where timing cannot be trusted (hilly terrain with low tracking confidence, or outside radar coverage) are marked as such instead of showing a confident time.

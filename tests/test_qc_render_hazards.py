@@ -3,12 +3,12 @@ import zlib
 
 import numpy as np
 
-from vajranow.hazards import HAIL_CAP_DBZ, exceedance, level_grid, rain_rate
-from vajranow.qc import clean_scans, remove_speckle
-from vajranow.render import hazard_png, radar_png
-from vajranow.scenarios import SCENARIOS
-from vajranow.synthetic import StormWorld
-from vajranow.verify import contingency, fss
+from imperial_x.hazards import HAIL_CAP_DBZ, exceedance, level_grid, rain_rate
+from imperial_x.qc import clean_scans, remove_speckle
+from imperial_x.render import hazard_png, radar_png
+from imperial_x.scenarios import SCENARIOS
+from imperial_x.synthetic import StormWorld
+from imperial_x.verify import contingency, fss
 
 
 def test_clutter_and_missing_scans():

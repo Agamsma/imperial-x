@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from vajranow.pipeline import run_nowcast
+from imperial_x.pipeline import run_nowcast
 
 
 @pytest.fixture(scope="module")
@@ -83,7 +83,7 @@ def client():
     pytest.importorskip("httpx")
     from fastapi.testclient import TestClient
 
-    from vajranow.service import create_app
+    from imperial_x.service import create_app
 
     return TestClient(create_app())
 

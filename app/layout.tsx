@@ -20,20 +20,20 @@ const geistMono = Geist_Mono({
 });
 
 const DESCRIPTION =
-  "VajraNow is a web dashboard that tells officials which storm hazard is coming, where and how precisely, how sure we are, and how many minutes they have. SIH 2026 idea by Team OmniSense.";
+  "Imperial-X is a web dashboard that tells officials which storm hazard is coming, where and how precisely, how sure we are, and how many minutes they have. SIH 2026 idea by Team OmniSense.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "VajraNow | Storm nowcasting for India",
+  title: "Imperial-X | Storm nowcasting for India",
   description: DESCRIPTION,
   openGraph: {
-    title: "VajraNow | Storm nowcasting for India",
+    title: "Imperial-X | Storm nowcasting for India",
     description: DESCRIPTION,
-    siteName: "VajraNow",
+    siteName: "Imperial-X",
     type: "website",
     locale: "en_IN",
   },
-  twitter: { card: "summary_large_image", title: "VajraNow | Storm nowcasting for India", description: DESCRIPTION },
+  twitter: { card: "summary_large_image", title: "Imperial-X | Storm nowcasting for India", description: DESCRIPTION },
 };
 
 export const viewport: Viewport = {

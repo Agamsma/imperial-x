@@ -31,7 +31,7 @@ class FusionNet(nn.Module):
 
 
 def export_npz(model: FusionNet, path, meta: dict | None = None) -> None:
-    """Save weights in the format vajranow.fusion.FusionModel reads."""
+    """Save weights in the format imperial_x.fusion.FusionModel reads."""
     params: dict[str, np.ndarray] = {}
     mods = list(model.convs) + [model.out]
     dils = list(DILATIONS) + [1]

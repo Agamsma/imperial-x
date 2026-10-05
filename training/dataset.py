@@ -20,11 +20,11 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from vajranow.advection import Sampler, forward_points  # noqa: E402
-from vajranow.filters import downsample2  # noqa: E402
-from vajranow.fusion import build_features, to_coarse  # noqa: E402
-from vajranow.observe import analyse  # noqa: E402
-from vajranow.synthetic import random_scenario  # noqa: E402
+from imperial_x.advection import Sampler, forward_points  # noqa: E402
+from imperial_x.filters import downsample2  # noqa: E402
+from imperial_x.fusion import build_features, to_coarse  # noqa: E402
+from imperial_x.observe import analyse  # noqa: E402
+from imperial_x.synthetic import random_scenario  # noqa: E402
 
 LEADS = (30, 60)
 

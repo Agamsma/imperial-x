@@ -4,7 +4,7 @@ Usage (from the repo root):
 
     python training/train_fusion.py --train 480 --val 60 --epochs 60
 
-Needs PyTorch (CPU is fine). Writes vajranow/weights/fusion_v1.npz.
+Needs PyTorch (CPU is fine). Writes imperial_x/weights/fusion_v1.npz.
 Training data is synthetic only, so the result shows the pipeline works.
 It says nothing about skill on real storms.
 """
@@ -45,7 +45,7 @@ def main() -> None:
     ap.add_argument("--epochs", type=int, default=60)
     ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--lr", type=float, default=2e-3)
-    ap.add_argument("--out", default=str(ROOT / "vajranow" / "weights" / "fusion_v1.npz"))
+    ap.add_argument("--out", default=str(ROOT / "imperial_x" / "weights" / "fusion_v1.npz"))
     args = ap.parse_args()
 
     torch.manual_seed(0)

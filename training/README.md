@@ -7,7 +7,7 @@ fine); the deployed engine does not. Trained on synthetic storms only.
 | --- | --- |
 | `dataset.py` | Builds samples from random synthetic storms: five inputs at analysis time, and the change in reflectivity along the motion after 30 and 60 minutes as targets |
 | `model.py` | The network (four dilated 3 x 3 convolutions and a 1 x 1 output, about 17 thousand weights) and the export to numpy |
-| `train_fusion.py` | Trains on synthetic storms and writes `vajranow/weights/fusion_v1.npz` |
+| `train_fusion.py` | Trains on synthetic storms and writes `imperial_x/weights/fusion_v1.npz` |
 | `evaluate.py` | Compares persistence, extrapolation and extrapolation plus fusion on held-out synthetic storms (CSI and FSS) |
 
 ```bash

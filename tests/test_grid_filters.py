@@ -1,8 +1,8 @@
 import numpy as np
 import pytest
 
-from vajranow.filters import box_mean, box_sum, neighbourhood_max
-from vajranow.grid import GRID, haversine_km
+from imperial_x.filters import box_mean, box_sum, neighbourhood_max
+from imperial_x.grid import GRID, haversine_km
 
 
 def test_lonlat_roundtrip():

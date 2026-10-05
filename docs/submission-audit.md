@@ -1,6 +1,6 @@
 # Submission audit (4 Oct 2026, deck V4)
 
-Scope: the SIH26084 idea deck (**final version: V4**, `VajraNow_SIH26084_Idea_V4.pptx`), this
+Scope: the SIH26084 idea deck (**final version: V4**), this
 repository, the website and the real-data baseline. Each status was checked against `main` and
 deck V4 on 4 Oct 2026. Rows 1 to 32 were first written against deck V3 and are updated for V4;
 the claims that are new or changed in V4 are mapped to their evidence in the second table.
@@ -19,12 +19,12 @@ or work we do not have yet).
 | 6 | Life-cycle plot compared whole-domain radar with a 1° satellite box | H | Code review | `make_figure.py` counts radar in the same 1° × 1° box as the satellite | Fixed |
 | 7 | Result chart too small to read on the slide | M | Slide render | Redrawn at slide size (`make_skill_figure.py`) | Partly (not checked on a projector) |
 | 8 | README said "no real radar" while the deck showed real data | H | README vs slide 2 | README status block: built / preliminary evidence / planned, with the baseline section | Fixed |
-| 9 | LightGBM, pysteps or Py-ART read as built | H | None is in any requirements file; pysteps is named only in a comment in `vajranow/advection.py` | Deck: "Used: numpy, OpenCV, PyTorch, FastAPI, Next.js. Planned: pysteps, LightGBM, PostGIS". README tech stack split the same way | Fixed |
+| 9 | LightGBM, pysteps or Py-ART read as built | H | None is in any requirements file; pysteps is named only in a comment in `imperial_x/advection.py` | Deck: "Used: numpy, OpenCV, PyTorch, FastAPI, Next.js. Planned: pysteps, LightGBM, PostGIS". README tech stack split the same way | Fixed |
 | 10 | IITM status ("requested" vs "planned") | H | No record of a sent request | Deck V4, README, site and data-sources doc: "To request" | Open: send the request, then update |
 | 11 | NCMRWF status | M | Same | Deck V4, README, site and data-sources doc: "NCMRWF to request" | Open: send the request, then update |
 | 12 | CAP file and Sachet read as built | H | No CAP code in the repo | Site and README: planned, no agency endorsement implied. Deck V4 keeps "No agency endorsement implied" but slide 5 now says state control rooms get "Hazard zones + CAP alerts" without "planned" | Partly (deck V4 wording) |
 | 13 | "Reliability gate and scorecard, tested on Indian radar" | H | Not evaluated; "Not reliable" = terrain + low tracking confidence only | Spec in [`reliability-gate.md`](reliability-gate.md), marked proposed. Deck V4 slide 2 describes "a gate built on past skill and current data quality" and a "daily public scorecard" without saying proposed (see V4 rows below) | Partly (deck V4 wording) |
-| 14 | "2 runs in a row" rule | M | Not in `vajranow/decide.py` | Reliability-gate doc: proposed. Deck V4 drops "Proposed": "Raise a level only on a very high chance or 2 runs in a row" | Partly (deck V4 wording) |
+| 14 | "2 runs in a row" rule | M | Not in `imperial_x/decide.py` | Reliability-gate doc: proposed. Deck V4 drops "Proposed": "Raise a level only on a very high chance or 2 runs in a row" | Partly (deck V4 wording) |
 | 15 | "If a source drops, the rest keep running" | M | If the latest radar scan is missing, the engine raises an error and no nowcast is run; a stale satellite image is flagged but still used | Site, README and docs describe what the code does and mark the rest planned. Deck V4: "Run on the remaining sources with those outputs off; if radar is lost, mark forecasts stale and issue no new alerts" reads as built; neither is implemented | Partly (deck wording) |
 | 16 | INSAT "3D + 3DR, 15 min combined" | M | Our files: INSAT-3DR, 30 min | Deck: "INSAT-3DR (verified in our data)", "30 min frames in our order" | Fixed |
 | 17 | 3 to 6 h described as a weather-model outlook | H | Code: advected storm areas plus new-storm zones | Deck V4: "3–6 h: blend with NCMRWF model guidance"; repo and site say the same, marked planned | Fixed |
@@ -38,7 +38,7 @@ or work we do not have yet).
 | 25 | Citation fit | M | [6] is deep learning, not LightGBM | [6] cited as an idea only; listed in [`NOTICE.md`](../NOTICE.md) | Partly (not every reference re-read) |
 | 26 | Deck metadata "Crowdfunder 2013" | L | `docProps/core.xml` | Title and author updated; template originals kept in the comments | Fixed (template licence unverified) |
 | 27 | Originality | M | Not checked | [`NOTICE.md`](../NOTICE.md) lists the methods taken from the literature | Open: no code or chart similarity scan |
-| 28 | The name VajraNow is already used | M | GitHub search: 4 other repositories with the same or a near name | None yet | Open: rename is your choice |
+| 28 | The project's first name was already used | M | GitHub search: 4 other repositories with the same or a near name | Renamed to Imperial-X (repo `Agamsma/imperial-x`, site imperial-x-six.vercel.app) | Fixed |
 | 29 | Dashboard screenshot placeholder | M | Deck V4 slide 2 has a screenshot of the live /demo page (REPLAY MODE, new hazard labels) | Placeholder replaced | Fixed |
 | 30 | Publishing imagery derived from MOSDAC data | M | MOSDAC terms not checked | Public figures show only derived numbers (areas, fractions, CSI), no radar or satellite images | Open: check the terms |
 | 31 | Validation design | M | Plan text only | Day-grouped split, independent labels, missing data never scored as negative (deck, method page, coverage doc). The baseline itself still counts missing pixels as no echo, as its README says | Partly (plan, not run) |
@@ -53,7 +53,7 @@ or work we do not have yet).
 | "Fills the 0–3 h gap ... hand over to NCMRWF model guidance beyond 3 h" (2) | README, site, method page, coverage doc: 0–3 h nowcast, NCMRWF blend for 3–6 h **planned** | Fixed (planned) |
 | "Fuse Doppler radar (3D reflectivity + velocity), INSAT-3DR and lightning on one 2 km grid, refreshed with every radar scan (~15 min)" (2) | Design. The demo engine fuses synthetic radar, infrared and lightning in 10-minute steps; real velocity is not processed; per-scan runs are planned | Partly (design, not built) |
 | "Use the full 3D radar volume: −10 °C echo for lightning, 45 dBZ above freezing for hail, low-level divergence for downbursts" (2, 3) | README hazards table, site hazards cards, method page, coverage doc: all marked **planned, not built**. The 81-level volume and `VEL` field are in our TERLS files | Partly (planned) |
-| "Running today: engine, map dashboard and open API (synthetic storms) + a real-radar test" (2) | `vajranow/`, `app/demo/`, `/api/py`, `validation/real_radar/` | Fixed |
+| "Running today: engine, map dashboard and open API (synthetic storms) + a real-radar test" (2) | `imperial_x/`, `app/demo/`, `/api/py`, `validation/real_radar/` | Fixed |
 | "Missing or late data is flagged, never hidden" (2) | Earlier missing radar scans are reported; a satellite image over 20 min old is marked stale. A missing latest scan stops the run (no nowcast, so nothing stale is shown) | Partly |
 | "Not reliable" as "a gate built on past skill and current data quality" (2) | Only terrain + low tracking confidence is built; the skill gate is proposed ([`reliability-gate.md`](reliability-gate.md)) | Open (reads as built) |
 | "Arrival windows that are scored: target is 8 of 10 observed arrivals inside the window" (2) | A target; arrival windows have not been scored on real data | Open (target only) |

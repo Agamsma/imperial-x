@@ -71,7 +71,7 @@ export default function DemoDashboard({ notice }: { notice?: string }) {
 
       <header className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-line bg-white px-4 py-3">
         <Link href="/" className="text-lg font-bold text-accent">
-          VajraNow
+          Imperial-X
         </Link>
         <span className="rounded-md bg-accent px-2 py-1 text-xs font-bold tracking-wide text-white">REPLAY MODE (demo)</span>
         <div className="flex flex-wrap gap-2">

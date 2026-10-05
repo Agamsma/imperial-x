@@ -1,6 +1,6 @@
 # Data sources
 
-How VajraNow plans to get each dataset, and where we stand today.
+How Imperial-X plans to get each dataset, and where we stand today.
 
 > **Rule for this repo:** never commit downloaded data. MOSDAC and IMD terms do not allow redistribution. Keep all downloads in a local `data/` folder, which is already in `.gitignore`. The website demo and the engine use only synthetic data made in code. The one exception is the two-day baseline in [`validation/real_radar/`](../validation/real_radar/), which reads MOSDAC files kept outside the repo and lists them in `input_manifest.csv`.
 
@@ -66,7 +66,7 @@ How VajraNow plans to get each dataset, and where we stand today.
 
 - **What:** real time data from the India Meteorological Department radar network.
 - **How to get it:** only through an official approval or partnership with IMD.
-- **Status:** future. VajraNow will not claim live operation until this is in place.
+- **Status:** future. Imperial-X will not claim live operation until this is in place.
 
 ## 7. ISS-LIS lightning (NASA)
 

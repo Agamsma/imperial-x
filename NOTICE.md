@@ -1,6 +1,6 @@
 # Third-party notices and attribution
 
-VajraNow's own code is MIT licensed (see [LICENSE](LICENSE), © 2026 Team OmniSense). The MIT
+Imperial-X's own code is MIT licensed (see [LICENSE](LICENSE), © 2026 Team OmniSense). The MIT
 licence covers our code only. It does not replace or change the terms of any data, method,
 package or template listed below.
 
@@ -21,9 +21,9 @@ package or template listed below.
 
 | Method | Where in the repo | Source |
 | --- | --- | --- |
-| TREC block matching for storm motion | [`vajranow/motion.py`](vajranow/motion.py) | Rinehart and Garvey, 1978 (classic method). Our own numpy code |
-| Semi-Lagrangian extrapolation | [`vajranow/advection.py`](vajranow/advection.py) | The same idea as the pysteps `semilagrangian` method (Pulkkinen et al., 2019, GMD 12, 4185). **No pysteps code is included**; pysteps is not a dependency. pysteps itself is BSD-3-Clause licensed |
-| Z = 300 R^1.4 and the 53 dBZ hail cap | [`vajranow/hazards.py`](vajranow/hazards.py) | Classic convective Z-R relation and cap, as used by default in the WSR-88D rain algorithm |
+| TREC block matching for storm motion | [`imperial_x/motion.py`](imperial_x/motion.py) | Rinehart and Garvey, 1978 (classic method). Our own numpy code |
+| Semi-Lagrangian extrapolation | [`imperial_x/advection.py`](imperial_x/advection.py) | The same idea as the pysteps `semilagrangian` method (Pulkkinen et al., 2019, GMD 12, 4185). **No pysteps code is included**; pysteps is not a dependency. pysteps itself is BSD-3-Clause licensed |
+| Z = 300 R^1.4 and the 53 dBZ hail cap | [`imperial_x/hazards.py`](imperial_x/hazards.py) | Classic convective Z-R relation and cap, as used by default in the WSR-88D rain algorithm |
 | Optical flow in the real-data baseline | [`validation/real_radar/skill.py`](validation/real_radar/skill.py) | OpenCV `calcOpticalFlowFarneback` (Farneback, 2003), called as a library. OpenCV is Apache-2.0 licensed |
 | Storm objects with tree-model hazards (planned) | Not implemented | Idea only: Cintineo et al., 2024 (NOAA ProbSevere v3) |
 | Multi-source hazard nowcasting | Not implemented | Idea only: Leinonen et al., 2023 (GRL). That study uses deep learning, not the LightGBM models we plan |

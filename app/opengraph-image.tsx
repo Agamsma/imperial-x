@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 // Link preview card shown when the site is shared (WhatsApp, LinkedIn, SIH portal).
-export const alt = "VajraNow: storm nowcasting dashboard idea for India. SIH 2026, Team OmniSense.";
+export const alt = "Imperial-X: storm nowcasting dashboard idea for India. SIH 2026, Team OmniSense.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -48,8 +48,8 @@ export default function Image() {
             TEAM OMNISENSE PRESENTS
           </div>
           <div style={{ display: "flex", flexDirection: "column", marginTop: 18, lineHeight: 0.95 }}>
-            <div style={{ display: "flex", fontSize: 128, letterSpacing: 6 }}>VAJRA</div>
-            <div style={{ display: "flex", fontSize: 124, fontWeight: 700, letterSpacing: 4 }}>NOW</div>
+            <div style={{ display: "flex", fontSize: 128, letterSpacing: 6 }}>IMPERIAL</div>
+            <div style={{ display: "flex", fontSize: 124, fontWeight: 700, letterSpacing: 4 }}>-X</div>
           </div>
           <div style={{ display: "flex", marginTop: 26, fontSize: 30, fontStyle: "italic", color: "rgba(255,255,255,0.85)", lineHeight: 1.35 }}>
             Which storm hazard is coming, where and how precisely, how sure we are, and how many minutes officials have.

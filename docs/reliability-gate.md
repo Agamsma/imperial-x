@@ -5,7 +5,7 @@
 ## What exists today
 
 The only reliability check in the code is the **"Not reliable"** label in
-[`vajranow/decide.py`](../vajranow/decide.py). A place gets "Not reliable (terrain, low motion
+[`imperial_x/decide.py`](../imperial_x/decide.py). A place gets "Not reliable (terrain, low motion
 confidence)" instead of an arrival time when all of these hold:
 
 - the place is at 800 m or higher (hilly terrain),
@@ -14,7 +14,7 @@ confidence)" instead of an arrival time when all of these hold:
   new-storm zone is nearby, or the storm chance reaches 20%.
 
 Places outside radar coverage are marked "Outside radar coverage". Nothing in the running engine
-measures skill: the scores in [`vajranow/verify.py`](../vajranow/verify.py) are used only in the
+measures skill: the scores in [`imperial_x/verify.py`](../imperial_x/verify.py) are used only in the
 tests, on synthetic storms.
 
 Everything below is **PROPOSED**.
@@ -61,4 +61,4 @@ From the deck: a very high chance raises a level at once; lower levels need two 
 in a row. With scans about 15 minutes apart in our files, the second run adds about 15 minutes.
 Choosing this needs measuring, on validation days, warning time against false-alarm ratio for
 the one-run and two-run rules. Until then it is a proposal. Nothing like it is in
-`vajranow/decide.py`.
+`imperial_x/decide.py`.

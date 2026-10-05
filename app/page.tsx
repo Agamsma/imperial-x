@@ -237,7 +237,7 @@ export default function Home() {
             glow="right"
             eyebrow="How it works (planned)"
             title="From raw radar to a clear decision"
-            intro="Storms build in minutes, so we nowcast 0–3 h from fresh observations and hand over to NCMRWF model guidance for 3–6 h. With each new radar scan (about every 15 minutes), VajraNow will put radar, satellite, lightning and weather-model data on one 2 km output grid, forecast where storms move and grow, and turn that into IMD colour levels with arrival ranges. Real detail is coarser than 2 km: satellite pixels are about 4 km and the radar beam widens with range."
+            intro="Storms build in minutes, so we nowcast 0–3 h from fresh observations and hand over to NCMRWF model guidance for 3–6 h. With each new radar scan (about every 15 minutes), Imperial-X will put radar, satellite, lightning and weather-model data on one 2 km output grid, forecast where storms move and grow, and turn that into IMD colour levels with arrival ranges. Real detail is coarser than 2 km: satellite pixels are about 4 km and the radar beam widens with range."
           >
             <Reveal>
               <div className="rounded-3xl border border-white/10 bg-white/[0.025] p-4 shadow-[0_30px_80px_rgba(0,0,0,0.35)] backdrop-blur-sm sm:p-8">
@@ -390,7 +390,7 @@ export default function Home() {
                 </div>
                 <p className="mt-4 text-sm leading-relaxed text-white/55">
                   CSI = hits / (hits + misses + false alarms), echo of 20 dBZ or more, 3 km tolerance. 32 forecast pairs (18 on 10 May, 14
-                  on 11 May). Team analysis. Two days are too few for a general claim. The VajraNow engine has not been run on these files.
+                  on 11 May). Team analysis. Two days are too few for a general claim. The Imperial-X engine has not been run on these files.
                 </p>
                 <a
                   href={VALIDATION_URL}

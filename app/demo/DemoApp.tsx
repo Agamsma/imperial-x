@@ -23,7 +23,7 @@ function Loading() {
       </div>
       <div className="flex flex-1 items-center justify-center p-6">
         <div className="w-full max-w-md rounded-2xl border border-line bg-white p-6 shadow-sm">
-          <p className="text-lg font-semibold text-accent">Running the VajraNow engine</p>
+          <p className="text-lg font-semibold text-accent">Running the Imperial-X engine</p>
           <p className="mt-1 text-sm text-muted">On synthetic radar, satellite and lightning data. The first run can take a few seconds.</p>
           <ul className="mt-4 space-y-2">
             {STEPS.map((s, i) => (

@@ -24,11 +24,11 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from vajranow.advection import Sampler, departure_points  # noqa: E402
-from vajranow.fusion import build_features, get_model, growth_at_lead  # noqa: E402
-from vajranow.observe import analyse  # noqa: E402
-from vajranow.synthetic import random_scenario  # noqa: E402
-from vajranow.verify import Contingency, contingency, fss  # noqa: E402
+from imperial_x.advection import Sampler, departure_points  # noqa: E402
+from imperial_x.fusion import build_features, get_model, growth_at_lead  # noqa: E402
+from imperial_x.observe import analyse  # noqa: E402
+from imperial_x.synthetic import random_scenario  # noqa: E402
+from imperial_x.verify import Contingency, contingency, fss  # noqa: E402
 
 METHODS = ("persistence", "extrapolation", "fusion")
 

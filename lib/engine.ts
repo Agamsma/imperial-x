@@ -1,4 +1,4 @@
-// Types and fetchers for the VajraNow engine API (Python, served under /api/py).
+// Types and fetchers for the Imperial-X engine API (Python, served under /api/py).
 // Every response is computed from synthetic storms.
 
 export const ENGINE_BASE = "/api/py";

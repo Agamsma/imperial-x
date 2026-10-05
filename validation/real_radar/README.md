@@ -27,7 +27,7 @@ single pair.
 
 ![Storm life cycle and skill](figures/terls-may10-11.png)
 
-This baseline is separate from the VajraNow engine in [`vajranow/`](../../vajranow/). The engine
+This baseline is separate from the Imperial-X engine in [`imperial_x/`](../../imperial_x/). The engine
 runs on synthetic storms only and has not been run on these files.
 
 ## What is in this folder

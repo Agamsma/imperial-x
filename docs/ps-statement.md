@@ -5,7 +5,7 @@ on 4 Oct 2026. The text below is verbatim, including the portal's own spacing. T
 two characters garbled by copy and paste (an apostrophe and the en dashes in "0–6" and "1–3")
 are restored.
 
-How VajraNow covers each part of it: [requirements-coverage.md](requirements-coverage.md).
+How Imperial-X covers each part of it: [requirements-coverage.md](requirements-coverage.md).
 
 ---
 

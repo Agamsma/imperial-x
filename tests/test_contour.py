@@ -1,6 +1,6 @@
 import numpy as np
 
-from vajranow.contour import _area, contour_rings, level_features, polygons
+from imperial_x.contour import _area, contour_rings, level_features, polygons
 
 
 def test_square_contour_area():
@@ -41,7 +41,7 @@ def test_level_features_geojson():
 
 
 def test_simplify_keeps_shape():
-    from vajranow.contour import simplify
+    from imperial_x.contour import simplify
 
     t = np.linspace(0, 2 * np.pi, 200)
     ring = np.c_[50 + 20 * np.sin(t), 50 + 20 * np.cos(t)]

@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from vajranow.fusion import WEIGHTS_PATH, FusionModel, build_features, growth_at_lead
+from imperial_x.fusion import WEIGHTS_PATH, FusionModel, build_features, growth_at_lead
 
 pytestmark = pytest.mark.skipif(not WEIGHTS_PATH.exists(), reason="fusion weights not trained yet")
 
