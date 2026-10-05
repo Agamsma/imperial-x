@@ -207,8 +207,8 @@ storm life cycle figure; it is not used in the skill scores.
 
 `make_figure.py` draws the radar area >= 30 dBZ (km², one pixel is about 1 km²) and the
 satellite cold cloud fraction inside the same box on 10 May, next to the skill bars.
-`make_skill_figure.py` draws the skill figure used on slide 2 of the deck and on the website
-in its V3 version (`public/real-data/skill-only.png`). `make_day_figure.py` draws the per-day
+`make_skill_figure.py` draws the skill figure used on slide 2 of the deck
+(`figures/skill_only.png`, copied to `public/real-data/skill-only.png`). `make_day_figure.py` draws the per-day
 figure used on the V4 deck, the README and the website (`figures/skill_by_day.png` and
 `public/real-data/skill-by-day.png`); it reads the storm speeds, pair counts, pooled values and
 the winner of each day from `skill_results.json`. All three read only the JSON results.

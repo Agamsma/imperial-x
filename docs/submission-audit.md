@@ -39,7 +39,7 @@ or work we do not have yet).
 | 26 | Deck metadata "Crowdfunder 2013" | L | `docProps/core.xml` | Title and author updated; template originals kept in the comments | Fixed (template licence unverified) |
 | 27 | Originality | M | Not checked | [`NOTICE.md`](../NOTICE.md) lists the methods taken from the literature | Open: no code or chart similarity scan |
 | 28 | The project's first name was already used | M | GitHub search: 4 other repositories with the same or a near name | Renamed to Imperial-X (repo `Agamsma/imperial-x`, site imperial-x-six.vercel.app) | Fixed |
-| 29 | Dashboard screenshot placeholder | M | Deck V4 slide 2 has a screenshot of the live /demo page (REPLAY MODE, new hazard labels) | Placeholder replaced | Fixed |
+| 29 | Dashboard screenshot | M | Deck V4 slide 2 has a screenshot of the live /demo page (REPLAY MODE, new hazard labels) | The screenshot is the real prototype dashboard, labelled synthetic demo data | Fixed |
 | 30 | Publishing imagery derived from MOSDAC data | M | MOSDAC terms not checked | Public figures show only derived numbers (areas, fractions, CSI), no radar or satellite images | Open: check the terms |
 | 31 | Validation design | M | Plan text only | Day-grouped split, independent labels, missing data never scored as negative (deck, method page, coverage doc). The baseline itself still counts missing pixels as no echo, as its README says | Partly (plan, not run) |
 | 32 | Ensemble fractions called probabilities | M | No calibration | Disclosed in the deck, README, site and method page | Fixed |

@@ -41,16 +41,16 @@ for j, (i, col, lab) in enumerate([(1, GRY, "Persistence (no motion)"), (2, NAVY
         ax.text(xi[k] + (j - .5) * w, .03, f"{vals[k]:.2f}", ha="center", color="white", fontsize=7.5, fontweight="bold")
         ax.plot([xi[k] + (j - .5) * w] * 2, pool(l, i)[1], "o", ms=3, mfc="white" if j else "black", mec="black", mew=.5)
 ax.set_xticks(xi)
-ax.set_xticklabels(["+15 min lead", "+30 min lead"], fontsize=7.5)
+ax.set_xticklabels(["Nominal +15 min", "Nominal +30 min"], fontsize=7.5)
 ax.set_ylim(0, .95)
 ax.set_ylabel("CSI (higher is better)", fontsize=7.5)
 ax.tick_params(labelsize=7)
 ax.legend(fontsize=7, frameon=False, loc="upper right", ncol=1, bbox_to_anchor=(1.02, 1.06))
 fig.text(.02, .955, "Skill vs lead time: motion does not beat persistence", fontsize=8, fontweight="bold", va="top")
-fig.text(.02, .20, "CSI = hits / (hits + misses + false alarms). Echo ≥20 dBZ, 3 km tolerance.\n"
-         f"TERLS radar, 10 and 11 May 2026; {sum(npairs)} forecast pairs pooled ({' + '.join(map(str, npairs))}).\n"
-         "Bars: pair-weighted mean. Dots: single days (10 May, 11 May).\n"
-         "Source: team analysis. Preliminary baseline, two days only.",
+fig.text(.02, .20, "CSI = hits / (hits + misses + false alarms); echo ≥20 dBZ, 3 km tolerance.\n"
+         "Preliminary team analysis, TERLS radar, 10-11 May 2026, two days only.\n"
+         f"Nominal leads (scans are about 15 min apart). {sum(npairs)} pairs ({' + '.join(map(str, npairs))}), pair-weighted.\n"
+         "Dots: single days.",
          fontsize=6.3, va="top", color="#333", linespacing=1.25)
 os.makedirs(FIGS, exist_ok=True)
 fig.savefig(os.path.join(FIGS, "skill_only.png"))
